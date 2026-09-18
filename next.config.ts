@@ -14,9 +14,13 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  turbopack: {
-    root: workspaceRoot,
-  },
+  ...(process.env.VERCEL
+    ? {}
+    : {
+        turbopack: {
+          root: workspaceRoot,
+        },
+      }),
 };
 
 export default nextConfig;
