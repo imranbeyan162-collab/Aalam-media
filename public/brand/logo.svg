@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="aalamGreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="50%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#059669" flood-opacity="0.35" />
+    </filter>
+  </defs>
+  <!-- Outer circle with golden/emerald ring -->
+  <circle cx="100" cy="100" r="92" fill="url(#aalamGreenGrad)" stroke="#FFFFFF" stroke-width="4" filter="url(#subtleGlow)" />
+  <circle cx="100" cy="100" r="82" fill="none" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="2" stroke-dasharray="4 3" />
+  <!-- Stylized Arabic & Latin fused 'A' mark in pure white -->
+  <path d="M100 36 L144 148 L122 148 L111 120 L89 120 L78 148 L56 148 Z M100 68 L94 104 L106 104 Z" fill="#FFFFFF" />
+  <!-- Islamic crescent touch in crossbar -->
+  <path d="M84 106 Q100 115 116 106 Q100 120 84 106 Z" fill="#10B981" />
+</svg>

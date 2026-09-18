@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" width="160" height="48">
+  <defs>
+    <linearGradient id="imakoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+  </defs>
+  <rect x="2" y="6" width="36" height="36" rx="8" fill="url(#imakoGrad)" />
+  <text x="20" y="30" fill="#FFFFFF" font-family="system-ui, sans-serif" font-weight="900" font-size="20" text-anchor="middle">i</text>
+  <text x="46" y="24" fill="#FFFFFF" font-family="system-ui, sans-serif" font-weight="800" font-size="15" letter-spacing="0.5">IMAKO</text>
+  <text x="46" y="37" fill="#93C5FD" font-family="system-ui, sans-serif" font-weight="500" font-size="10" letter-spacing="1">SOLUTION</text>
+</svg>
