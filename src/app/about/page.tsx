@@ -77,13 +77,14 @@ export default function AboutPage() {
           <div className="md:col-span-4">
             <ImageSlot
               meta={{
-                url: '/images/founder-interview.jpg',
+                url: '/images/founder-misbah.jpg',
                 alt: 'Misbah Sheikh Husein - CEO & Founder',
                 caption: 'Misbah Sheikh Husein',
                 credit: 'Aalam Media Founder Archive',
                 source: 'Official Portrait'
               }}
               aspect="tall"
+              position="top"
               className="rounded-2xl shadow-xl"
             />
           </div>

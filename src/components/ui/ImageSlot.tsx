@@ -6,7 +6,8 @@ import { Image as ImageIcon } from 'lucide-react';
 
 interface ImageSlotProps {
   meta?: ImageSlotMeta;
-  aspect?: 'video' | 'square' | 'wide' | 'tall';
+  aspect?: 'video' | 'square' | 'wide' | 'tall' | 'lead';
+  position?: 'top' | 'center' | 'bottom';
   className?: string;
   fallbackLabel?: string;
 }
@@ -14,6 +15,7 @@ interface ImageSlotProps {
 export default function ImageSlot({ 
   meta, 
   aspect = 'video', 
+  position = 'top',
   className = '',
   fallbackLabel = '[IMAGE SLOT / UPLOAD AREA]'
 }: ImageSlotProps) {
@@ -21,7 +23,14 @@ export default function ImageSlot({
     video: 'aspect-video',
     square: 'aspect-square',
     wide: 'aspect-[21/9]',
+    lead: 'aspect-[16/10] sm:aspect-[16/9]',
     tall: 'aspect-[3/4]'
+  };
+
+  const positionClasses = {
+    top: 'object-top',
+    center: 'object-center',
+    bottom: 'object-bottom'
   };
 
   const hasUrl = meta?.url && meta.url.trim().length > 0;
@@ -33,7 +42,7 @@ export default function ImageSlot({
           <img
             src={meta.url}
             alt={meta.alt || 'Aalam Media Image'}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            className={`w-full h-full object-cover ${positionClasses[position]} transition-transform duration-700 ease-out group-hover:scale-105`}
             loading="lazy"
           />
         ) : (

@@ -73,7 +73,8 @@ export default function HomePage() {
               <Link href={`/news/${leadArticle.slug}`}>
                 <ImageSlot
                   meta={leadArticle.featuredImage}
-                  aspect="wide"
+                  aspect="lead"
+                  position="top"
                   className="rounded-none border-0"
                 />
               </Link>

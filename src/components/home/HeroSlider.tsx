@@ -20,7 +20,7 @@ const slides: Slide[] = [
     title: 'Misbah Sheikh Husein',
     subtitle: 'CEO & Founder — Aalam Media | "Addunyaa Islaamummaan Miidhagde."',
     badge: 'Hundeeffamaa & Hoggannaa',
-    imageUrl: '/images/founder-interview.jpg',
+    imageUrl: '/images/founder-misbah.jpg',
     link: '/about'
   },
   {
@@ -102,7 +102,7 @@ export default function HeroSlider() {
             <img
               src={s.imageUrl}
               alt={s.title}
-              className={`w-full h-full object-cover brightness-[0.42] transition-transform duration-[6000ms] ease-out ${isActive ? 'scale-105' : 'scale-100'}`}
+              className={`w-full h-full object-cover object-[center_20%] brightness-[0.42] transition-transform duration-[6000ms] ease-out ${isActive ? 'scale-105' : 'scale-100'}`}
             />
             {/* Smooth Islamic gradient overlays */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F0D] via-[#0A0F0D]/50 to-transparent"></div>

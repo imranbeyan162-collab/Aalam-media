@@ -45,9 +45,9 @@ export default function TeamPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {team.map((m, idx) => (
-          <div key={idx} className="p-5 rounded-2xl bg-gray-900 border border-gray-800 text-center space-y-3 hover:border-emerald-600 transition">
-            <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-emerald-500">
-              <img src={m.image} alt={m.name} className="w-full h-full object-cover" />
+          <div key={idx} className="p-5 rounded-2xl bg-gray-900 border border-gray-800 text-center space-y-3 hover-lift hover:border-emerald-500 transition-all duration-300">
+            <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-emerald-500 shadow-lg">
+              <img src={m.image} alt={m.name} className="w-full h-full object-cover object-top" />
             </div>
             <div>
               <h3 className="text-base font-bold text-white">{m.name}</h3>

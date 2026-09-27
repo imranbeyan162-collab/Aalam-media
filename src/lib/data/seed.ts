@@ -15,7 +15,7 @@ export const initialArticles: Article[] = [
     headline: 'Miidiyaan Aalam Media Magaalaa Adaamaa Irraa Hawaasa Addunyaatiif Tamsaasa Isaa Jalqabe',
     subtitle: 'Madda oduu dhugaa, barnoota Islaamaa ammayyaa fi tajaajila hawaasummaa qulqullina olaanaa qabu kennuuf kutannoon hojiitti gale.',
     featuredImage: {
-      url: '/images/misbah-launch-speech.jpg',
+      url: '/images/misbah-launch-lead.jpg',
       alt: 'Istaadiyoo fi Eebba Aalam Media Adaamaa',
       caption: 'Hundeeffamaan Aalam Media Misbah Sheikh Husein sirna eebbaa irratti haasawa taasisan',
       credit: 'Aalam Media Press',
