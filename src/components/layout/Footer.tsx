@@ -142,9 +142,9 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-3">
             <img 
-              src="/brand/imako-logo.svg" 
+              src="/brand/imako-logo.png" 
               alt="Imako Solution" 
-              className="h-7 w-auto object-contain opacity-90 hover:opacity-100 transition" 
+              className="h-8 sm:h-9 w-auto object-contain transition-transform duration-300 hover:scale-105 drop-shadow" 
             />
             <div className="flex flex-col">
               <span className="text-gray-300 font-semibold tracking-wide">
