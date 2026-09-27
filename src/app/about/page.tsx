@@ -77,7 +77,7 @@ export default function AboutPage() {
           <div className="md:col-span-4">
             <ImageSlot
               meta={{
-                url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=80',
+                url: '/images/founder-interview.jpg',
                 alt: 'Misbah Sheikh Husein - CEO & Founder',
                 caption: 'Misbah Sheikh Husein',
                 credit: 'Aalam Media Founder Archive',

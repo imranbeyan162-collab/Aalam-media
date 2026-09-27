@@ -27,13 +27,13 @@ export default function ImageSlot({
   const hasUrl = meta?.url && meta.url.trim().length > 0;
 
   return (
-    <figure className={`relative overflow-hidden rounded-xl bg-gray-900 border border-gray-800 flex flex-col ${className}`}>
+    <figure className={`relative overflow-hidden rounded-xl bg-gray-900 border border-gray-800 transition-all duration-300 flex flex-col ${className}`}>
       <div className={`relative w-full ${aspectClasses[aspect]} overflow-hidden group flex items-center justify-center bg-gray-950`}>
         {hasUrl ? (
           <img
             src={meta.url}
             alt={meta.alt || 'Aalam Media Image'}
-            className="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             loading="lazy"
           />
         ) : (

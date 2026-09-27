@@ -15,16 +15,16 @@ export const initialArticles: Article[] = [
     headline: 'Miidiyaan Aalam Media Magaalaa Adaamaa Irraa Hawaasa Addunyaatiif Tamsaasa Isaa Jalqabe',
     subtitle: 'Madda oduu dhugaa, barnoota Islaamaa ammayyaa fi tajaajila hawaasummaa qulqullina olaanaa qabu kennuuf kutannoon hojiitti gale.',
     featuredImage: {
-      url: 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200&auto=format&fit=crop&q=80',
-      alt: 'Istaadiyoo Aalam Media Adaamaa',
-      caption: 'Istaadiyoo fi wiirtuu odeeffannoo Aalam Media magaalaa Adaamaa',
-      credit: 'Aalam Media Studio',
-      source: 'Aalam Media Internal Press'
+      url: '/images/misbah-launch-speech.jpg',
+      alt: 'Istaadiyoo fi Eebba Aalam Media Adaamaa',
+      caption: 'Hundeeffamaan Aalam Media Misbah Sheikh Husein sirna eebbaa irratti haasawa taasisan',
+      credit: 'Aalam Media Press',
+      source: 'Adama Bureau'
     },
     author: {
       name: 'Misbah Sheikh Husein',
       role: 'CEO & Founder',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80'
+      avatar: '/images/founder-avatar.jpg'
     },
     publishedAt: '2026-09-15T09:30:00Z',
     updatedAt: '2026-09-15T11:00:00Z',
@@ -49,26 +49,26 @@ Hoggantuun dhaabbatichaa Misbah Sheikh Husein akka ibsetti, Aalam Media qulqulli
     id: 'art-2',
     slug: 'stars-of-islam-sheikh-talha-jafar',
     category: 'Seenaa Ulamaa’otaa',
-    headline: 'Seenaa fi Gumaacha Sheikh Xalhaa Jaafar: Urjii Beekumsaa fi Falmaa Haqaati',
-    subtitle:  "Biyya Wollootti kan dhalatan ulamaa'aan kabajamaan kun qooda guddaa barnoota Islaamaa fi aadaa Oromoof kennan qorannoon dhiyaate.",
+    headline: 'Seenaa fi Gumaacha Sheikh Ahmad Basiiraa: Urjii Beekumsaa fi Falmaa Haqaati',
+    subtitle: "Ulamaa'aan kabajamaan kun qooda guddaa barnoota Islaamaa fi aadaa Oromoof kennan qorannoon dhiyaate.",
     featuredImage: {
-      url: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=1200&auto=format&fit=crop&q=80',
-      alt:  "Makaatabaa fi Kitaabban Ulamaa'otaa",
-      caption: 'Kitaabban wabii fi barreeffamoota harkaa Sheikh Xalhaa Jaafar',
+      url: '/images/ulamaa-sheikh-ahmad.jpg',
+      alt: "Seenaa Ulamaa'aa Guddaa Sheekh Ahmad Basiiraa",
+      caption: 'Misbah Sheikh Husein suuraa qulqulluu Sheekh Ahmad Basiiraa waliin',
       credit: 'Waajjira Seenaa Aalam Media',
       source: 'Kuusaa Galmee Seenaa'
     },
     author: {
       name: 'Ustaz Ahmed Nur',
       role: 'Senior Islamic Researcher',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80'
+      avatar: '/images/founder-avatar.jpg'
     },
     publishedAt: '2026-09-14T14:00:00Z',
     updatedAt: '2026-09-14T14:00:00Z',
-    content: `Seenaa ulamaa'ota biyya keenyaa keessatti maqaan Sheikh Xalhaa Jaafar akka urjii ifaa addatti calaqqisa. Isaan beekumsa fiqhii, aqiidaa fi afaan Arabaatiin qooda guddaa kan gumaachan yoo ta'u, dhaloota hedduu barsiisanii biyyaaf gumaachaniiru.
+    content: `Seenaa ulamaa'ota biyya keenyaa keessatti maqaan Sheekh Ahmad Basiiraa akka urjii ifaa addatti calaqqisa. Isaan beekumsa fiqhii, aqiidaa fi afaan Arabaatiin qooda guddaa kan gumaachan yoo ta'u, dhaloota hedduu barsiisanii biyyaaf gumaachaniiru.
 
 Aalam Media qophii addaa "Seenaa Ulamaa'otaa" jedhuun dhaloota ammaa fi seenaa kana wal-barsiisuuf tattaaffii bal'aa taasisaa jira.`,
-    tags: ['Ulamaaota', 'Seenaa', 'Wollo', 'Beekumsa', 'AalamMedia'],
+    tags: ['Ulamaaota', 'Seenaa', 'AhmadBasiira', 'Beekumsa', 'AalamMedia'],
     isBreaking: false,
     isFeatured: true,
     language: 'om',
@@ -81,18 +81,18 @@ Aalam Media qophii addaa "Seenaa Ulamaa'otaa" jedhuun dhaloota ammaa fi seenaa k
     slug: 'islamic-finance-and-halal-economy-growth',
     category: 'Oduu Addunyaalessaa',
     headline: 'Guddinni Faayinaansii Islaamaa Addunyaa Irratti Waggaa Waggaan Dhibbeentaa 12 Dabalaa Jira',
-    subtitle:  "Biyyoonni hedduun sirna baankii fi faayinaansii qajeelfama Shari'aatin gaggeeffamu gara dinagdee isaaniitti dabalachaa jiru.",
+    subtitle: "Biyyoonni hedduun sirna baankii fi faayinaansii qajeelfama Shari'aatin gaggeeffamu gara dinagdee isaaniitti dabalachaa jiru.",
     featuredImage: {
-      url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80',
-      alt: 'Wiirtuu Dinagdee Addunyaa',
+      url: '/images/world-news.jpg',
+      alt: 'Wiirtuu Dinagdee fi Oduu Addunyaa',
       caption: 'Wiirtuu faayinaansii fi daldala addunyaalessaa',
-      credit: 'International Financial Center',
+      credit: 'Aalam Global Desk',
       source: 'Global Islamic Economy Report'
     },
     author: {
       name: 'Dr. Faisal Abdulmalik',
       role: 'Economics Editor',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&auto=format&fit=crop&q=80'
+      avatar: '/images/founder-avatar.jpg'
     },
     publishedAt: '2026-09-13T10:15:00Z',
     updatedAt: '2026-09-13T10:15:00Z',
@@ -109,19 +109,19 @@ Aalam Media qophii addaa "Seenaa Ulamaa'otaa" jedhuun dhaloota ammaa fi seenaa k
     id: 'art-4',
     slug: 'quran-reflection-surah-al-hujurat-unity',
     category: 'Barnoota Islaamaa',
-    headline:  "Ilaalcha Qur'aanaa: Suuraa Al-Hujuraat fi Tokkummaa Hawaasa Addunyaa",
+    headline: "Ilaalcha Qur'aanaa: Suuraa Al-Hujuraat fi Tokkummaa Hawaasa Addunyaa",
     subtitle: 'Nuti qomoo fi saboota adda addaa kan taasifamneef akka wal-beeknuufi wal-kabajnuuf malee akka wal-cunqursinuuf miti.',
     featuredImage: {
-      url: 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1200&auto=format&fit=crop&q=80',
-      alt:  "Qur'aana Qulqulluu",
-      caption:  "Qur'aana Qulqulluu fi barumsa safuu hawaasummaa",
+      url: '/images/islamic-education.jpg',
+      alt: "Barnoota Islaamaa fi Tafsiira",
+      caption: "Marii fi barnoota Islaamaa istaadiyoo Aalam Media",
       credit: 'Aalam Islamic Studio',
       source: 'Tafsiira Aalam Media'
     },
     author: {
       name: 'Sheikh Yusuf Abdi',
       role: 'Tafsir Specialist',
-      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&auto=format&fit=crop&q=80'
+      avatar: '/images/founder-avatar.jpg'
     },
     publishedAt: '2026-09-12T08:00:00Z',
     updatedAt: '2026-09-12T08:00:00Z',
@@ -141,16 +141,16 @@ Aalam Media qophii addaa "Seenaa Ulamaa'otaa" jedhuun dhaloota ammaa fi seenaa k
     headline: 'Hegere: Imala Misbah Sheikh Husein Gara Magaalaa Seena-Qabeettii Harar Jugol',
     subtitle: 'Dallaawwan seenaa, masjiidota durii dhibba tokkoo ol fi seenaa daldala fi Islaamummaa baha Afrikaa qorachuu.',
     featuredImage: {
-      url: 'https://images.unsplash.com/photo-1578895101408-1a36b834405b?w=1200&auto=format&fit=crop&q=80',
-      alt: 'Magaalaa Harar Jugol',
-      caption: 'Kallattii seenaa magaalaa Harar Jugol fi aadaa daawwannaatiin',
+      url: '/images/misbah-outdoor.jpg',
+      alt: 'Imala Hegere Misbah Sheikh Husein',
+      caption: 'Misbah Sheikh Husein maaykirofooniidhaan dirree irraa gabaasa dhiyeessaa jiru',
       credit: 'Hegere Media Expedition',
       source: 'Aalam Travel Doc'
     },
     author: {
       name: 'Misbah Sheikh Husein',
       role: 'CEO & Founder',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80'
+      avatar: '/images/founder-avatar.jpg'
     },
     publishedAt: '2026-09-11T16:20:00Z',
     updatedAt: '2026-09-11T16:20:00Z',
@@ -194,8 +194,8 @@ export const initialScholars: ScholarProfile[] = [
     id: 'sch-3',
     name: 'Sheikh Muhammad Rashaad Abdulle',
     era: '1934 - 2013',
-    title:  "Gumaacha Hiika Qur'aanaa Afaan Oromoo Isa Duraa",
-    bio:  "Qur'aana Guutuu Afaan Oromooti hiikuun gumaacha seenaa keessatti hin dagatamne kan galmeessan hayyuu addunyaalessaa.",
+    title: "Gumaacha Hiika Qur'aanaa Afaan Oromoo Isa Duraa",
+    bio: "Qur'aana Guutuu Afaan Oromooti hiikuun gumaacha seenaa keessatti hin dagatamne kan galmeessan hayyuu addunyaalessaa.",
     keyContributions: [
       "Hiika Qur'aanaa guutuu Afaan Oromootiin maxxansiisuu",
       'Qophii raadiyoo fi barreeffamoota barnoota amantaa',
@@ -208,17 +208,17 @@ export const initialPodcasts: PodcastEpisode[] = [
   {
     id: 'pod-1',
     episodeNumber: 1,
-    title: 'Addunyaa Ammayyaa fi Qulqullina Miidiyaa Islaamaa',
-    guest: 'Ustaz Jamal Husein (Waliigala Barnoota Islaamaa)',
+    title: 'Marii Biyyooleessaa: Gaaffilee Muslimoonni Marii Biyyooleessaa Irratti Dhiheessuu Qaban',
+    guest: 'Ustaaz Ahmedin Jabal',
     host: 'Misbah Sheikh Husein',
-    description:  "Miidiyaan ammayyaa akkamitti ergaa qajeelaa fi dhugaa hawaasa addunyaatiif qaqqabsiisuu akka danda'u xiinxala bal'aa dhiyaate.",
+    description: "Marii bal'aa Ustaaz Ahmedin Jabal waliin dhimma marii biyyoolessaa fi gaaffilee hawaasa Muslimaa irratti xiyyeeffate.",
     date: '2026-09-14',
     youtubeId: 'AalamMedia-cc8lij',
     duration: '48:20',
     coverImage: {
-      url: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800&auto=format&fit=crop&q=80',
-      alt: 'Aalam Podcast Studio',
-      caption: 'Istaadiyoo Aalam Podcast Adaamaa',
+      url: '/images/interview-ahmedin-jabal.jpg',
+      alt: 'Marii Biyyooleessaa - Ustaaz Ahmedin Jabal',
+      caption: 'Marii Biyyooleessaa Ustaaz Ahmedin Jabal & Misbah Sheikh Husein',
       credit: 'Aalam Studio',
       source: 'Internal'
     }
@@ -226,16 +226,16 @@ export const initialPodcasts: PodcastEpisode[] = [
   {
     id: 'pod-2',
     episodeNumber: 2,
-    title: 'Guddina Hawaasummaa fi Seenaa Aadaa Oromoo',
-    guest: 'Obbo Kadiir Elemo (Qorataa Aadaa fi Seenaa)',
+    title: 'Aalam Podcast & Media Studio: Qophii fi Tamsaasa Ammayyaa',
+    guest: 'Hayyoota fi Gaazexeessitoota Oromiyaa',
     host: 'Misbah Sheikh Husein',
-    description: "Aadaan wal-kabajaa fi nagaa Oromoo akkamitti qajeelfama amantaa Islaamaatiin gabbate akka deeme qorannoo waliin laalamu.",
+    description: "Istaadiyoo fi meeshaalee ammayyaa Aalam Media ittiin tajaajilu, qophii podcast fi sagantaalee hawaasummaa.",
     date: '2026-09-08',
     youtubeId: 'AalamMedia-cc8lij',
     duration: '54:10',
     coverImage: {
-      url: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&auto=format&fit=crop&q=80',
-      alt: 'Aalam Podcast Microphone',
+      url: '/images/podcast-studio.jpg',
+      alt: 'Aalam Podcast Studio',
       caption: 'Qophii Podcast Aalam Media',
       credit: 'Aalam Studio',
       source: 'Internal'
@@ -250,9 +250,9 @@ export const initialVideos: VideoItem[] = [
     category: 'Latest Videos',
     youtubeEmbed: 'https://www.youtube.com/embed/@AalamMedia-cc8lij',
     thumbnail: {
-      url: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&auto=format&fit=crop&q=80',
+      url: '/images/misbah-launch-speech.jpg',
       alt: 'Eebba Aalam Media',
-      caption: 'Sirna eebbaa fi tamsaasa jalqabaa',
+      caption: 'Sirna eebbaa fi tamsaasa jalqabaa Misbah Sheikh Husein',
       credit: 'Aalam Video Unit',
       source: 'Internal'
     },
@@ -261,13 +261,13 @@ export const initialVideos: VideoItem[] = [
   },
   {
     id: 'vid-2',
-    title:  "Barnoota Qur'aanaa: Qaraatii fi Safuu Hawaasaa",
+    title: "Barnoota Qur'aanaa: Qaraatii fi Safuu Hawaasaa",
     category: 'Islamic Videos',
     youtubeEmbed: 'https://www.youtube.com/embed/@AalamMedia-cc8lij',
     thumbnail: {
-      url: 'https://images.unsplash.com/photo-1584286595398-a59f21d313f5?w=800&auto=format&fit=crop&q=80',
-      alt:  "Barnoota Qur'aanaa",
-      caption:  "Kutaa barnoota Qur'aanaa idilee",
+      url: '/images/islamic-education.jpg',
+      alt: "Barnoota Qur'aanaa",
+      caption: "Kutaa barnoota Qur'aanaa idilee",
       credit: 'Aalam Islamic Media',
       source: 'Internal'
     },
@@ -276,14 +276,14 @@ export const initialVideos: VideoItem[] = [
   },
   {
     id: 'vid-3',
-    title: 'Hegere: Qorannoo Seenaa Masjiida Durii Negash',
+    title: 'Marii Biyyooleessaa Irratti Maaliif Argama? - Ustaaz Ahmedin Jabal',
     category: 'Interviews',
     youtubeEmbed: 'https://www.youtube.com/embed/@AalamMedia-cc8lij',
     thumbnail: {
-      url: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=800&auto=format&fit=crop&q=80',
-      alt: 'Masjiida Negash',
-      caption: 'Masjiida jalqabaa seenaa Afrikaa Negash',
-      credit: 'Hegere Travel Team',
+      url: '/images/marii-biyyooleessaa.jpg',
+      alt: 'Marii Biyyooleessaa',
+      caption: 'Ustaaz Ahmedin Jabal & Misbah Sheikh Husein',
+      credit: 'Aalam Press',
       source: 'Internal'
     },
     publishedAt: '2026-09-05',
@@ -312,7 +312,7 @@ export const initialAudios: AudioItem[] = [
   },
   {
     id: 'aud-3',
-    title:  "Qaraatii Qur'aanaa: Suuraa Yaasiin fi Al-Rahmaan",
+    title: "Qaraatii Qur'aanaa: Suuraa Yaasiin fi Al-Rahmaan",
     category: 'Qur’anic Recitation',
     speaker: 'Qari Abdurrahmaan Ali',
     audioUrl: '/uploads/audio-quran-1.mp3',
@@ -332,7 +332,7 @@ export const initialAlbums: PhotoAlbum[] = [
     photographer: 'Aalam Media Photo Unit',
     category: 'Media Studio',
     coverImage: {
-      url: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop&q=80',
+      url: '/images/studio-neon.jpg',
       alt: 'Studio Aalam Media',
       caption: 'Wiirtuu tamsaasa Aalam Media',
       credit: 'Aalam Media Studio',
@@ -340,23 +340,30 @@ export const initialAlbums: PhotoAlbum[] = [
     },
     photos: [
       {
-        url: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop&q=80',
+        url: '/images/studio-neon.jpg',
         alt: 'Istaadiyoo Sagalee fi Viidiyoo',
         caption: 'Istaadiyoo ammayyaa Adaamaa',
         credit: 'Aalam Media',
         source: 'Internal'
       },
       {
-        url: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800&auto=format&fit=crop&q=80',
+        url: '/images/podcast-studio.jpg',
         alt: 'Qophii Podcast',
         caption: 'Bakka waraabbii Podcast',
         credit: 'Aalam Media',
         source: 'Internal'
       },
       {
-        url: 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800&auto=format&fit=crop&q=80',
-        alt: 'Kutaa Gulaalaa Oduu',
-        caption: 'Garee gulaalaa fi gaazexeessitootaa',
+        url: '/images/studio-editing.jpg',
+        alt: 'Kutaa Sagalee fi Editing',
+        caption: 'Garee gulaalaa fi suuraa sagalee',
+        credit: 'Aalam Media',
+        source: 'Internal'
+      },
+      {
+        url: '/images/studio-interview-wide.jpg',
+        alt: 'Istaadiyoo Marii',
+        caption: 'Istaadiyoo Makaatabaa fi Marii',
         credit: 'Aalam Media',
         source: 'Internal'
       }
@@ -364,21 +371,57 @@ export const initialAlbums: PhotoAlbum[] = [
   },
   {
     id: 'alb-2',
-    title: 'Aadaa fi Masjiidota Seena-Qabeeyyii',
-    event: 'Imala Daawwannaafi Qorannoo',
+    title: "Seenaa Ulamaa'otaa fi Aadaa Islaamaa",
+    event: "Kuusaa Seenaa fi Ulamaa'ota Oromiyaa",
     date: '2026-09-10',
-    location: 'Baha Oromiyaa',
-    caption: 'Ijaarsa bareedina masjiidota fi aadaa Oromoo',
-    photographer: 'Hegere Expedition',
+    location: 'Oromiyaa, Itoophiyaa',
+    caption: "Ulamaa'ota gurguddoo seenaa Islaamaa Oromiyaa keessatti qooda guddaa baasan",
+    photographer: 'Aalam Media Heritage Unit',
     category: 'Aadaa fi Seenaa',
     coverImage: {
-      url: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=800&auto=format&fit=crop&q=80',
-      alt: 'Masjiida Bareedaa',
-      caption: 'Masjiida seena qabeessa',
-      credit: 'Hegere Team',
+      url: '/images/ulamaa-scholars-banner.jpg',
+      alt: "Seenaa Ulamaa'ota Keenyaa",
+      caption: "Ulamaa'ota gurguddoo biyya keenyaa",
+      credit: 'Aalam Heritage Unit',
       source: 'Internal'
     },
-    photos: []
+    photos: [
+      {
+        url: '/images/ulamaa-scholars-banner.jpg',
+        alt: "Seenaa Ulamaa'ota Keenyaa",
+        caption: "Ulamaa'ota gurguddoo biyya keenyaa",
+        credit: 'Aalam Media',
+        source: 'Internal'
+      },
+      {
+        url: '/images/scholars-panel.jpg',
+        alt: "Hayyoota Ulamaa'otaa",
+        caption: "Hayyoota ulamaa'ota marii irratti",
+        credit: 'Aalam Media',
+        source: 'Internal'
+      },
+      {
+        url: '/images/ulamaa-sheikh-ahmad.jpg',
+        alt: "Sheekh Ahmad Basiiraa",
+        caption: "Seenaa Sheekh Ahmad Basiiraa",
+        credit: 'Aalam Media',
+        source: 'Internal'
+      },
+      {
+        url: '/images/sheikh-teaching.jpg',
+        alt: "Gorsa fi Barnoota Hayyuu",
+        caption: "Gorsa fi barumsa amantaa",
+        credit: 'Aalam Media',
+        source: 'Internal'
+      },
+      {
+        url: '/images/scholar-reading.jpg',
+        alt: "Hayyuu Qur'aana Qara'aa Jiran",
+        caption: "Kutaa dubbisaa fi qaraatii",
+        credit: 'Aalam Media',
+        source: 'Internal'
+      }
+    ]
   }
 ];
 
@@ -389,28 +432,43 @@ export const initialHegere: HegereStory[] = [
     destination: 'Harar, Bale fi Adaamaa',
     date: '2026-09-10',
     summary: 'Hundeeffamaan Aalam Media Misbah Sheikh Husein iddoowwan seena qabeeyyii daawwachuun qorannoo fi waraabbii qophii daawwannaa taasise.',
-    founderNotes:  "Aadaan keenya gabbataadha; Islaamummaan miidhagina dabalataaf. Bakka hunda deemnee dhugaa jiru hawaasa addunyaaf mul'isuun gahee keenya.",
+    founderNotes: "Aadaan keenya gabbataadha; Islaamummaan miidhagina dabalataaf. Bakka hunda deemnee dhugaa jiru hawaasa addunyaaf mul'isuun gahee keenya.",
     coverImage: {
-      url: 'https://images.unsplash.com/photo-1578895101408-1a36b834405b?w=1000&auto=format&fit=crop&q=80',
+      url: '/images/misbah-outdoor.jpg',
       alt: 'Imala Hegere Misbah Sheikh Husein',
       caption: 'Misbah Sheikh Husein imala Hegere irratti',
       credit: 'Aalam Hegere Team',
       source: 'Internal'
     },
-    gallery: []
+    gallery: [
+      {
+        url: '/images/misbah-outdoor.jpg',
+        alt: 'Misbah Sheikh Husein Hegere',
+        caption: 'Gabaasa dirree',
+        credit: 'Aalam Media',
+        source: 'Internal'
+      },
+      {
+        url: '/images/misbah-launch-speech.jpg',
+        alt: 'Eebba Aalam Media',
+        caption: 'Magaalaa Adaamaa',
+        credit: 'Aalam Media',
+        source: 'Internal'
+      }
+    ]
   }
 ];
 
 export const initialAds: Advertisement[] = [
   {
     id: 'ad-1',
-    advertiserName: 'Dhaabbata Takaaful fi Inshuraansii Islaamaa',
+    advertiserName: 'Sagantaa Addaa Marii Biyyooleessaa',
     placement: 'Homepage',
     image: {
-      url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1200&auto=format&fit=crop&q=80',
-      alt: 'Takaaful Inshuraansii',
-      caption:  "Inshuraansii haqa qabeessa qajeelfama Shari'aa eeggate",
-      credit: 'Takaaful Adama',
+      url: '/images/marii-biyyooleessaa.jpg',
+      alt: 'Marii Biyyooleessaa - Ustaaz Ahmedin Jabal & Misbah Sheikh Husein',
+      caption: 'Sagantaa Addaa Marii Biyyooleessaa',
+      credit: 'Aalam Media Production',
       source: 'Sponsored'
     },
     link: '#',

@@ -119,8 +119,8 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
         {/* Logo & Brand Name */}
         <Link href="/" className="flex items-center gap-3.5 group">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 transition duration-300 group-hover:scale-105">
-            <img src="/brand/logo.svg" alt="Aalam Media Logo" className="w-full h-full object-contain" />
+          <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 transition-transform duration-500 ease-out group-hover:scale-105 group-hover:rotate-2">
+            <img src="/brand/logo.png" alt="Aalam Media Logo" className="w-full h-full object-contain drop-shadow" />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">

@@ -45,7 +45,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <span>Gara Fuula Duraatti (View Site)</span>
           </Link>
           <div className="flex items-center gap-2.5 pt-2">
-            <img src="/brand/logo.svg" alt="Aalam Media" className="w-8 h-8" />
+            <img src="/brand/logo.png" alt="Aalam Media" className="w-8 h-8 object-contain" />
             <div>
               <h2 className="text-sm font-black text-white font-display">AALAM NEWSROOM</h2>
               <span className="text-[10px] text-emerald-400 font-mono">Central Control v1.0</span>

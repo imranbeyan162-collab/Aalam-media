@@ -103,7 +103,7 @@ export default function ArticleDetailPage() {
         {/* Author info */}
         <div className="flex items-center gap-3">
           <img
-            src={article.author.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80'}
+            src={article.author.avatar || '/images/founder-avatar.jpg'}
             alt={article.author.name}
             className="w-11 h-11 rounded-full object-cover border border-emerald-600/60"
           />

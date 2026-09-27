@@ -204,12 +204,12 @@ export default function HomePage() {
             </div>
             <div className="space-y-4">
               {nationalArticles.concat(initialArticles.slice(0, 1)).slice(0, 2).map((art, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-gray-900 border border-gray-800 space-y-2">
+                <div key={idx} className="p-4 rounded-2xl bg-gray-900/90 border border-gray-800 space-y-2.5 hover-lift group">
                   <ImageSlot meta={art.featuredImage} aspect="video" />
-                  <Link href={`/news/${art.slug}`} className="block font-bold text-sm text-white hover:text-emerald-400 transition">
+                  <Link href={`/news/${art.slug}`} className="block font-bold text-sm text-white group-hover:text-emerald-400 transition-colors duration-300 leading-snug">
                     {art.headline}
                   </Link>
-                  <p className="text-xs text-gray-400 line-clamp-2">{art.subtitle}</p>
+                  <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{art.subtitle}</p>
                 </div>
               ))}
             </div>
@@ -224,12 +224,12 @@ export default function HomePage() {
             </div>
             <div className="space-y-4">
               {muslimArticles.concat(initialArticles.slice(1, 2)).slice(0, 2).map((art, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-gray-900 border border-gray-800 space-y-2">
+                <div key={idx} className="p-4 rounded-2xl bg-gray-900/90 border border-gray-800 space-y-2.5 hover-lift group">
                   <ImageSlot meta={art.featuredImage} aspect="video" />
-                  <Link href={`/news/${art.slug}`} className="block font-bold text-sm text-white hover:text-emerald-400 transition">
+                  <Link href={`/news/${art.slug}`} className="block font-bold text-sm text-white group-hover:text-emerald-400 transition-colors duration-300 leading-snug">
                     {art.headline}
                   </Link>
-                  <p className="text-xs text-gray-400 line-clamp-2">{art.subtitle}</p>
+                  <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{art.subtitle}</p>
                 </div>
               ))}
             </div>
@@ -244,12 +244,12 @@ export default function HomePage() {
             </div>
             <div className="space-y-4">
               {worldArticles.concat(initialArticles.slice(2, 3)).slice(0, 2).map((art, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-gray-900 border border-gray-800 space-y-2">
+                <div key={idx} className="p-4 rounded-2xl bg-gray-900/90 border border-gray-800 space-y-2.5 hover-lift group">
                   <ImageSlot meta={art.featuredImage} aspect="video" />
-                  <Link href={`/news/${art.slug}`} className="block font-bold text-sm text-white hover:text-emerald-400 transition">
+                  <Link href={`/news/${art.slug}`} className="block font-bold text-sm text-white group-hover:text-emerald-400 transition-colors duration-300 leading-snug">
                     {art.headline}
                   </Link>
-                  <p className="text-xs text-gray-400 line-clamp-2">{art.subtitle}</p>
+                  <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{art.subtitle}</p>
                 </div>
               ))}
             </div>

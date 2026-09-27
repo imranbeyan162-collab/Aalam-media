@@ -13,13 +13,13 @@ export const metadata: Metadata = {
     description: 'Addunyaa Islaamummaan Miidhagde. Independent journalism and comprehensive Islamic knowledge.',
     url: 'https://aalammedia.com',
     siteName: 'Aalam Media',
-    images: [{ url: '/brand/logo.svg', width: 800, height: 800, alt: 'Aalam Media' }],
+    images: [{ url: '/brand/logo.png', width: 800, height: 800, alt: 'Aalam Media' }],
     locale: 'om_ET',
     type: 'website'
   },
   icons: {
-    icon: '/brand/logo.svg',
-    apple: '/brand/logo.svg'
+    icon: '/brand/logo.png',
+    apple: '/brand/logo.png'
   }
 };
 

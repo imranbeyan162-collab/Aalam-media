@@ -16,7 +16,7 @@ export default function Footer() {
           {/* Col 1: Brand & Slogan */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <img src="/brand/logo.svg" alt="Aalam Media" className="w-12 h-12 object-contain" />
+              <img src="/brand/logo.png" alt="Aalam Media" className="w-12 h-12 object-contain drop-shadow" />
               <div>
                 <span className="text-xl font-black tracking-tight text-white font-display">AALAM MEDIA</span>
                 <p className="text-xs text-emerald-400 italic">"{t('brand.slogan')}"</p>

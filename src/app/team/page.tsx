@@ -9,25 +9,25 @@ export default function TeamPage() {
       name: 'Misbah Sheikh Husein',
       role: 'CEO & Founder',
       bio: 'Hundeeffamaa fi hoggansa waliigalaa Aalam Media.',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80'
+      image: '/images/founder-avatar.jpg'
     },
     {
       name: 'Ustaz Ahmed Nur',
       role: 'Editor-in-Chief & Islamic Affairs',
       bio: 'Gulaalaa Olaanaa fi qindeessaa qophiilee barnoota Islaamaa.',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80'
+      image: '/images/scholar-reading.jpg'
     },
     {
       name: 'Hamza Abdurazak',
       role: 'Head of Media & Production',
       bio: 'Hoggannaa waraabbii viidiyoo, istaadiyoo fi tamsaasa ammayyaa.',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80'
+      image: '/images/studio-editing.jpg'
     },
     {
       name: 'Sumayya Mohammed',
       role: 'Community & Digital Lead',
       bio: 'Hoggantuu qunnamtii hawaasummaa fi tajaajila miseensotaa.',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80'
+      image: '/images/aalam-emblem.jpg'
     }
   ];
 
