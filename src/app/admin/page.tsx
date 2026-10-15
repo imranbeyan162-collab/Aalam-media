@@ -20,6 +20,42 @@ import {
 export default function AdminDashboardPage() {
   const { articles, deleteArticle } = useArticles();
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [membersCount, setMembersCount] = useState<number>(initialMembers.length);
+  const [adsCount, setAdsCount] = useState<number>(initialAds.length);
+  const [adsImpressions, setAdsImpressions] = useState<number>(0);
+  const [errorReportsCount, setErrorReportsCount] = useState<number>(initialErrorReports.length);
+
+  React.useEffect(() => {
+    // Check if real members exist in API / localStorage
+    fetch('/api/members')
+      .then(res => res.ok ? res.json() : [])
+      .then((data: any[]) => {
+        if (Array.isArray(data)) {
+          setMembersCount(data.length);
+        }
+      })
+      .catch(() => {});
+
+    // Check localStorage for active ads and error reports
+    try {
+      const savedAds = localStorage.getItem('aalam_media_ads');
+      if (savedAds) {
+        const parsed = JSON.parse(savedAds);
+        if (Array.isArray(parsed)) {
+          setAdsCount(parsed.length);
+          const totalImp = parsed.reduce((sum, ad) => sum + (ad.impressions || 0), 0);
+          setAdsImpressions(totalImp);
+        }
+      }
+      const savedErrors = localStorage.getItem('aalam_media_errors');
+      if (savedErrors) {
+        const parsed = JSON.parse(savedErrors);
+        if (Array.isArray(parsed)) {
+          setErrorReportsCount(parsed.length);
+        }
+      }
+    } catch (e) {}
+  }, []);
 
   const publishedArticles = articles.filter(a => a.status === 'PUBLISHED');
   const recentArticles = articles.slice(0, 5);
@@ -65,7 +101,7 @@ export default function AdminDashboardPage() {
             <span>Miseensota Galmaa'an</span>
             <Users className="w-4 h-4 text-blue-400" />
           </div>
-          <div className="text-2xl font-black text-white font-mono">{initialMembers.length}</div>
+          <div className="text-2xl font-black text-white font-mono">{membersCount}</div>
           <Link href="/admin/members" className="text-[11px] text-blue-400 hover:underline">
             Ilaali & CSV dhaan Baasi &rarr;
           </Link>
@@ -76,8 +112,10 @@ export default function AdminDashboardPage() {
             <span>Beeksisa Hojiirra Jiru</span>
             <Megaphone className="w-4 h-4 text-purple-400" />
           </div>
-          <div className="text-2xl font-black text-white font-mono">{initialAds.length}</div>
-          <span className="text-[11px] text-purple-400 font-mono">4,850 impressions</span>
+          <div className="text-2xl font-black text-white font-mono">{adsCount}</div>
+          <span className="text-[11px] text-purple-400 font-mono">
+            {adsImpressions === 0 ? '0 impressions' : `${adsImpressions.toLocaleString()} impressions`}
+          </span>
         </div>
 
         <div className="p-5 rounded-2xl bg-gray-950 border border-gray-800 space-y-2">
@@ -85,7 +123,7 @@ export default function AdminDashboardPage() {
             <span>Gabaasa Dogoggoraa</span>
             <AlertCircle className="w-4 h-4 text-amber-400" />
           </div>
-          <div className="text-2xl font-black text-white font-mono">{initialErrorReports.length}</div>
+          <div className="text-2xl font-black text-white font-mono">{errorReportsCount}</div>
           <Link href="/admin/errors" className="text-[11px] text-amber-400 hover:underline">
             Sirreessi (Review Queue) &rarr;
           </Link>

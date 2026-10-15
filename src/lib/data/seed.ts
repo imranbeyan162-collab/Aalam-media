@@ -459,67 +459,9 @@ export const initialHegere: HegereStory[] = [
   }
 ];
 
-export const initialAds: Advertisement[] = [
-  {
-    id: 'ad-1',
-    advertiserName: 'Sagantaa Addaa Marii Biyyooleessaa',
-    placement: 'Homepage',
-    image: {
-      url: '/images/marii-biyyooleessaa.jpg',
-      alt: 'Marii Biyyooleessaa - Ustaaz Ahmedin Jabal & Misbah Sheikh Husein',
-      caption: 'Sagantaa Addaa Marii Biyyooleessaa',
-      credit: 'Aalam Media Production',
-      source: 'Sponsored'
-    },
-    link: '#',
-    startDate: '2026-09-01',
-    endDate: '2026-10-31',
-    status: 'ACTIVE',
-    impressions: 4850,
-    clicks: 310
-  }
-];
+export const initialAds: Advertisement[] = [];
 
-export const initialMembers: MemberRecord[] = [
-  {
-    id: 'mem-1',
-    fullName: 'Hamza Abdurazak',
-    email: 'hamza.abdu@example.com',
-    phone: '0911223344',
-    city: 'Adaamaa',
-    country: 'Itoophiyaa',
-    preferredLanguage: 'Afaan Oromoo',
-    membershipType: 'Supporting Member',
-    areaOfInterest: 'Miidiyaa fi Qorannoo Barnoota Islaamaa',
-    message: 'Aalam Media cinaa dhaabbachuun gumaacha kiyya gumaachuun barbaada.',
-    status: 'ACTIVE',
-    createdAt: '2026-09-15T10:00:00Z'
-  },
-  {
-    id: 'mem-2',
-    fullName: 'Sumayya Mohammed',
-    email: 'sumayya.m@example.com',
-    phone: '0922334455',
-    city: 'Finfinnee',
-    country: 'Itoophiyaa',
-    preferredLanguage: 'English',
-    membershipType: 'Volunteer',
-    areaOfInterest: 'Gulaallii fi Qophii Viidiyoo',
-    message: 'Tola ooltummaan qophii fi sagantaalee gargaaruun fedha.',
-    status: 'ACTIVE',
-    createdAt: '2026-09-14T15:30:00Z'
-  }
-];
+export const initialMembers: MemberRecord[] = [];
 
-export const initialErrorReports: ErrorReport[] = [
-  {
-    id: 'err-1',
-    articleId: 'art-1',
-    articleTitle: 'Miidiyaan Aalam Media Magaalaa Adaamaa Irraa Hawaasa Addunyaatiif Tamsaasa Isaa Jalqabe',
-    reporterName: 'Kadiir Ahmed',
-    reporterEmail: 'kadiir@example.com',
-    details:  "Qubeeffama jecha tokkoo irratti fooyya'iinsi xiqqoon barbaachisa.",
-    status: 'PENDING',
-    createdAt: '2026-09-15T12:00:00Z'
-  }
-];
+export const initialErrorReports: ErrorReport[] = [];
+

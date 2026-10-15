@@ -141,20 +141,44 @@ export default function VideoPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-800">
-            <img src="/images/aalam-media-1.jpg" alt="Aalam Media Studio" className="w-full h-full object-cover" />
+          <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-800 bg-gray-900">
+            <img 
+              src="/images/studio-main.jpg" 
+              alt="Aalam Media Studio" 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('page_01.jpg')) target.src = '/images/page_01.jpg';
+              }} 
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-3">
               <span className="text-xs font-bold text-white">Istaadiyoo Qophii Sagantaalee</span>
             </div>
           </div>
-          <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-800">
-            <img src="/images/aalam-media-4.jpg" alt="Aalam Media Recording" className="w-full h-full object-cover" />
+          <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-800 bg-gray-900">
+            <img 
+              src="/images/studio-neon.jpg" 
+              alt="Aalam Media Recording" 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('page_04.jpg')) target.src = '/images/page_04.jpg';
+              }} 
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-3">
               <span className="text-xs font-bold text-white">Wiirtuu Tamsaasa Oduu</span>
             </div>
           </div>
-          <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-800">
-            <img src="/images/aalam-media-3.jpg" alt="Aalam Media Production" className="w-full h-full object-cover" />
+          <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-800 bg-gray-900">
+            <img 
+              src="/images/studio-editing.jpg" 
+              alt="Aalam Media Production" 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('page_03.jpg')) target.src = '/images/page_03.jpg';
+              }} 
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-3">
               <span className="text-xs font-bold text-white">Qophii Da'awaa fi Barnoota</span>
             </div>

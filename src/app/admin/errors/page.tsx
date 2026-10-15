@@ -53,6 +53,12 @@ export default function AdminErrorsPage() {
             </div>
           </div>
         ))}
+
+        {reports.length === 0 && (
+          <div className="p-8 rounded-2xl bg-gray-950 border border-gray-800 text-center text-gray-500 font-mono text-xs">
+            Gabaasni dogoggoraa tokkollee hin jiru (0 Error Reports). Dubbistoonni yeroo gabaasan asitti dhiyaata.
+          </div>
+        )}
       </div>
     </div>
   );

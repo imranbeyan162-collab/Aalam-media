@@ -33,12 +33,21 @@ export default function AdminAdsPage() {
               <span className="text-xs font-mono font-bold text-purple-400 uppercase">
                 {ad.placement} Slot
               </span>
-              <button
-                onClick={() => toggleStatus(ad.id)}
-                className={`px-3 py-1 rounded-full text-xs font-bold font-mono ${ad.status === 'ACTIVE' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-gray-800 text-gray-400'}`}
-              >
-                {ad.status}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => toggleStatus(ad.id)}
+                  className={`px-3 py-1 rounded-full text-xs font-bold font-mono ${ad.status === 'ACTIVE' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-gray-800 text-gray-400'}`}
+                >
+                  {ad.status}
+                </button>
+                <button
+                  onClick={() => setAds(ads.filter(a => a.id !== ad.id))}
+                  className="p-1 text-gray-500 hover:text-red-400 transition"
+                  title="Haqi (Delete)"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
 
             <div>
@@ -51,11 +60,17 @@ export default function AdminAdsPage() {
             )}
 
             <div className="pt-2 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400 font-mono">
-              <span>{ad.impressions} Views</span>
-              <span>{ad.clicks} Clicks</span>
+              <span>{ad.impressions || 0} Views</span>
+              <span>{ad.clicks || 0} Clicks</span>
             </div>
           </div>
         ))}
+
+        {ads.length === 0 && (
+          <div className="md:col-span-2 p-10 rounded-2xl bg-gray-950 border border-gray-800 text-center text-gray-500 font-mono text-xs">
+            Beeksisni hojiirra jiru tokkollee hin jiru (0 Active Ads).
+          </div>
+        )}
       </div>
     </div>
   );

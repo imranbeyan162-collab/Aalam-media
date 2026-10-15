@@ -10,6 +10,17 @@ export default function AdminMembersPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('ALL');
 
+  React.useEffect(() => {
+    fetch('/api/members')
+      .then(res => res.ok ? res.json() : [])
+      .then((data: MemberRecord[]) => {
+        if (Array.isArray(data)) {
+          setMembers(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const filtered = members.filter(m => {
     const matchesSearch = !searchQuery || 
       m.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -138,6 +149,14 @@ export default function AdminMembersPage() {
                 </td>
               </tr>
             ))}
+
+            {filtered.length === 0 && (
+              <tr>
+                <td colSpan={6} className="text-center py-10 text-gray-500 font-mono text-xs">
+                  Miseensi tokkollee hin galmoofne (0 Members). Namoonni fuula /member irraa yommuu galmaa'an asitti mul'atu.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
