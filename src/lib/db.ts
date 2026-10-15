@@ -31,6 +31,7 @@ export interface DatabaseSchema {
   comments: CommentItem[];
   subscribers: { email: string; date: string }[];
   mediaUploads: MediaItem[];
+  adminPasscode?: string;
 }
 
 let dbInstance: DatabaseSchema | null = null;
@@ -77,7 +78,8 @@ function initDb(): DatabaseSchema {
       { email: 'reader1@example.com', date: '2026-09-14' },
       { email: 'member@aalammedia.com', date: '2026-09-15' }
     ],
-    mediaUploads: []
+    mediaUploads: [],
+    adminPasscode: 'misbah123abc'
   };
 
   saveDb();
