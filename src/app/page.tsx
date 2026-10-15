@@ -375,7 +375,14 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-5">
-              <ImageSlot meta={initialPodcasts[0].coverImage} aspect="square" className="shadow-2xl" />
+              <Link href="/podcast" className="block relative group cursor-pointer rounded-2xl overflow-hidden shadow-2xl">
+                <ImageSlot meta={initialPodcasts[0].coverImage} aspect="square" className="rounded-2xl" />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-emerald-600/90 text-white flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:bg-emerald-500 transition">
+                    <Radio className="w-7 h-7 animate-pulse" />
+                  </div>
+                </div>
+              </Link>
             </div>
 
             <div className="lg:col-span-7 space-y-4">
@@ -394,22 +401,24 @@ export default function HomePage() {
                 {initialPodcasts[0].description}
               </p>
 
-              {/* Action Buttons: Listen / Watch buttons as mandated */}
+              {/* Action Buttons: Listen / Watch buttons */}
               <div className="pt-3 flex flex-wrap items-center gap-3">
                 <Link
                   href="/podcast"
-                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-lg"
+                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-lg active:scale-95"
                 >
                   <Radio className="w-4 h-4" />
                   <span>{t('sections.listenNow')}</span>
                 </Link>
-                <Link
-                  href="/podcast"
-                  className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-gray-200 border border-emerald-800 px-5 py-2.5 rounded-xl text-xs font-bold transition"
+                <a
+                  href="https://www.youtube.com/@AalamMedia-cc8lij"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-lg active:scale-95"
                 >
-                  <Video className="w-4 h-4 text-emerald-400" />
-                  <span>{t('sections.watchNow')} (YouTube)</span>
-                </Link>
+                  <Video className="w-4 h-4" />
+                  <span>Daawwadhaa (YouTube)</span>
+                </a>
               </div>
             </div>
           </div>
