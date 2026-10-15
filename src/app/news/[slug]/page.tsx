@@ -7,6 +7,7 @@ import { useLanguage } from '@/lib/i18n';
 import ImageSlot from '@/components/ui/ImageSlot';
 import AdSlot from '@/components/ads/AdSlot';
 import ErrorReportModal from '@/components/article/ErrorReportModal';
+import { useArticles } from '@/lib/articlesStore';
 import { initialArticles, initialAds } from '@/lib/data/seed';
 import { 
   Clock, 
@@ -28,8 +29,9 @@ export default function ArticleDetailPage() {
   const params = useParams();
   const slug = params?.slug as string;
   const { t } = useLanguage();
+  const { articles } = useArticles();
 
-  const article = initialArticles.find((a) => a.slug === slug) || initialArticles[0];
+  const article = articles.find((a) => a.slug === slug) || initialArticles.find((a) => a.slug === slug) || articles[0] || initialArticles[0];
 
   // States
   const [errorModalOpen, setErrorModalOpen] = useState(false);

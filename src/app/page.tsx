@@ -12,10 +12,10 @@ import {
   initialBreakingNews, 
   initialScholars, 
   initialPodcasts, 
-  initialVideos, 
   initialAlbums, 
   initialAds 
 } from '@/lib/data/seed';
+import { useArticles } from '@/lib/articlesStore';
 import { 
   Flame, 
   TrendingUp, 
@@ -36,15 +36,16 @@ import {
 
 export default function HomePage() {
   const { t, locale } = useLanguage();
+  const { articles } = useArticles();
   const [eduTab, setEduTab] = useState<'quran' | 'hadith' | 'fiqh' | 'aqeedah' | 'tafsir'>('quran');
 
-  // Content Filtering
-  const leadArticle = initialArticles[0];
-  const latestArticles = initialArticles.slice(1, 4);
-  const featuredArticles = initialArticles.filter(a => a.isFeatured);
-  const nationalArticles = initialArticles.filter(a => a.category.includes('Biyyoolessaa'));
-  const worldArticles = initialArticles.filter(a => a.category.includes('Addunyaa'));
-  const muslimArticles = initialArticles.filter(a => a.category.includes('Muslimaa') || a.category.includes('Ulamaa'));
+  // Dynamic Content Filtering from Live Store
+  const leadArticle = articles[0] || initialArticles[0];
+  const latestArticles = articles.slice(1, 4);
+  const featuredArticles = articles.filter(a => a.isFeatured);
+  const nationalArticles = articles.filter(a => a.category.includes('Biyyoolessaa'));
+  const worldArticles = articles.filter(a => a.category.includes('Addunyaa'));
+  const muslimArticles = articles.filter(a => a.category.includes('Muslimaa') || a.category.includes('Ulamaa'));
 
   return (
     <div className="w-full pb-16">
@@ -414,44 +415,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* SECTION 9 - VIDEO (Latest Uploads & Embeds) */}
-        <section className="space-y-4">
-          <div className="border-b border-gray-800 pb-2 flex items-center justify-between">
-            <h3 className="text-lg font-black uppercase tracking-wide text-white border-l-4 border-emerald-500 pl-3 flex items-center gap-2">
-              <Video className="w-5 h-5 text-emerald-500" />
-              {t('sections.videoSection')}
-            </h3>
-            <Link href="/video" className="text-xs text-emerald-400 hover:underline">
-              {t('sections.viewAll')} &rarr;
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {initialVideos.map((vid) => (
-              <div key={vid.id} className="rounded-xl bg-gray-900 border border-gray-800 overflow-hidden hover:border-emerald-600 transition group">
-                <div className="relative">
-                  <ImageSlot meta={vid.thumbnail} aspect="video" className="rounded-none border-0" />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-80 group-hover:opacity-100 transition">
-                    <div className="w-12 h-12 rounded-full bg-emerald-600/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
-                      <Video className="w-5 h-5 ml-0.5" />
-                    </div>
-                  </div>
-                  <span className="absolute bottom-2 right-2 bg-black/80 font-mono text-[11px] text-white px-2 py-0.5 rounded">
-                    {vid.duration}
-                  </span>
-                </div>
-                <div className="p-4 space-y-2">
-                  <span className="text-[10px] font-bold text-emerald-400 font-mono uppercase">
-                    {vid.category}
-                  </span>
-                  <h4 className="font-bold text-sm text-white line-clamp-2">
-                    {vid.title}
-                  </h4>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* SECTION 10 - PHOTO GALLERY (Photos only, by album/category) */}
 
         {/* SECTION 10 - PHOTO GALLERY (Photos only, by album/category) */}
         <section className="space-y-4">

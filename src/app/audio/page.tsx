@@ -1,17 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import Link from 'next/link';
 import { useLanguage } from '@/lib/i18n';
-import { initialAudios } from '@/lib/data/seed';
-import { Play, Pause, Volume2, Mic, Calendar, Clock, Radio } from 'lucide-react';
+import { Radio, Mic, Volume2, ArrowRight, ShieldCheck, Headphones } from 'lucide-react';
 
 export default function AudioPage() {
   const { t } = useLanguage();
-  const [currentAudio, setCurrentAudio] = useState(initialAudios[0]);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+      {/* Header */}
       <div className="border-b border-gray-800 pb-6">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-lg">
@@ -22,7 +21,7 @@ export default function AudioPage() {
               AALAM AUDIO NETWORK
             </span>
             <h1 className="text-3xl sm:text-4xl font-black text-white">
-              Sagalee (Audio & Lectures)
+              Sagalee & Barnoota (Audio Hub)
             </h1>
           </div>
         </div>
@@ -31,70 +30,98 @@ export default function AudioPage() {
         </p>
       </div>
 
-      {/* Featured Persistent Audio Player Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#06180F] via-gray-900 to-gray-950 border border-emerald-800/80 shadow-2xl space-y-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">
-              {currentAudio.category}
-            </span>
-            <h2 className="text-xl sm:text-2xl font-black text-white">{currentAudio.title}</h2>
-            <p className="text-xs text-gray-400">Lallabaa / Gabaasaa: <strong className="text-gray-200">{currentAudio.speaker}</strong></p>
+      {/* Official Audio Hub Banner */}
+      <div className="p-8 rounded-3xl bg-gradient-to-r from-[#06180F] via-gray-950 to-gray-900 border border-emerald-800/80 shadow-2xl space-y-4">
+        <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold font-mono uppercase tracking-wider">
+          <ShieldCheck className="w-4 h-4" />
+          <span>Tamsaasa Sagalee Qulqullina Olaanaa</span>
+        </div>
+        <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+          Sagantaalee fi Darsiilee Sagalee Kallattiin
+        </h2>
+        <p className="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-2xl">
+          Wiirtuun tamsaasa sagalee Aalam Media qaraatii Qur'aanaa, darsiilee Fiqhii fi Aqiidaa, fi kutaalee podcast sagaleen qopheessaa jira. Sagantaaleen haaraa qophii xumuratan asirratti kallattiin tamsaafamu.
+        </p>
+      </div>
+
+      {/* Primary Audio Hub Options */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Aalam Podcast Studio Card */}
+        <div className="p-6 rounded-3xl bg-gray-950 border border-gray-800 space-y-4 flex flex-col justify-between hover:border-emerald-600 transition shadow-xl group">
+          <div className="space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-600/10 border border-emerald-600/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition">
+              <Mic className="w-6 h-6" />
+            </div>
+            <div>
+              <span className="text-[10px] font-mono text-emerald-400 uppercase font-bold">Staadiyoo Marii</span>
+              <h3 className="text-xl font-bold text-white">Aalam Podcast Studio</h3>
+            </div>
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Kutaalee podcast marii hayyoota Islaamaa, qophii sagaleen qindaa'e, fi gaaf-deebii adda addaa staadiyoo podcast irraa hordofaa.
+            </p>
           </div>
 
-          <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-2xl text-xs transition shadow-xl"
+          <Link
+            href="/podcast"
+            className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow"
           >
-            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
-            <span>{isPlaying ? 'Dhaabi (Pause)' : 'Dhaggeeffadhaa (Play)'}</span>
-          </button>
+            <span>Kutaalee Podcast Dhaggeeffadhaa</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
-        {/* Audio Progress Bar */}
-        <div className="pt-2 space-y-1 font-mono text-xs text-gray-400">
-          <div className="w-full h-2.5 bg-gray-800 rounded-full overflow-hidden">
-            <div className={`h-full bg-emerald-500 ${isPlaying ? 'w-1/3 animate-pulse' : 'w-0'}`}></div>
+        {/* Studio Recitation & Lectures Hub */}
+        <div className="p-6 rounded-3xl bg-gray-950 border border-gray-800 space-y-4 flex flex-col justify-between hover:border-emerald-600 transition shadow-xl group">
+          <div className="space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-amber-600/10 border border-amber-600/30 flex items-center justify-center text-amber-400 group-hover:scale-105 transition">
+              <Headphones className="w-6 h-6" />
+            </div>
+            <div>
+              <span className="text-[10px] font-mono text-amber-400 uppercase font-bold">Qaraatii & Darsii</span>
+              <h3 className="text-xl font-bold text-white">Qur'aana & Darsiilee Islaamaa</h3>
+            </div>
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Qaraatii qulqulluu Qur'aana kabajamaa fi darsiilee gama afaaniin qophaa'an weebsaayitii irratti dhiyoota tamsaafamuuf qophiirra jiru.
+            </p>
           </div>
-          <div className="flex justify-between text-[11px]">
-            <span>{isPlaying ? '08:45' : '00:00'}</span>
-            <span>{currentAudio.duration}</span>
-          </div>
+
+          <Link
+            href="/education"
+            className="inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 border border-gray-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow"
+          >
+            <span>Barnoota Islaamaa Ilaali</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </div>
 
-      {/* Audio Track List */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-bold text-white uppercase tracking-wider border-l-4 border-emerald-500 pl-3">
-          Kuusaa Sagalee (All Audio Broadcasts)
+      {/* Production Studio Photos */}
+      <div className="p-8 rounded-3xl bg-gray-950 border border-gray-800 space-y-4">
+        <h3 className="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+          <span>Wiirtuu Sagalee fi Istaadiyoo Aalam Media</span>
         </h3>
 
-        <div className="space-y-3">
-          {initialAudios.map((aud) => (
-            <div
-              key={aud.id}
-              onClick={() => { setCurrentAudio(aud); setIsPlaying(true); }}
-              className={`cursor-pointer p-4 rounded-xl border transition flex items-center justify-between gap-4 ${currentAudio.id === aud.id ? 'bg-emerald-950/40 border-emerald-600 shadow-md' : 'bg-gray-900 border-gray-800 hover:border-gray-700'}`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gray-950 border border-gray-800 flex items-center justify-center text-emerald-400">
-                  {currentAudio.id === aud.id && isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                </div>
-                <div>
-                  <h4 className="font-bold text-sm text-white">{aud.title}</h4>
-                  <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
-                    <span className="text-emerald-400">{aud.category}</span>
-                    <span>·</span>
-                    <span>{aud.speaker}</span>
-                  </div>
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-800">
+            <img src="/images/founder-misbah.jpg" alt="Misbah Sheikh Husein" className="w-full h-full object-cover object-top" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+              <div>
+                <span className="text-xs font-bold text-white block">Misbah Sheikh Husein</span>
+                <span className="text-[11px] text-gray-300">CEO & Founder — Aalam Media</span>
               </div>
-
-              <span className="text-xs font-mono text-gray-500 shrink-0">
-                {aud.duration}
-              </span>
             </div>
-          ))}
+          </div>
+
+          <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-800">
+            <img src="/images/aalam-media-10.jpg" alt="Aalam Podcast Studio" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+              <div>
+                <span className="text-xs font-bold text-white block">Aalam Podcast Studio</span>
+                <span className="text-[11px] text-gray-300">Wiirtuu Marii fi Tamsaasa Sagalee</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

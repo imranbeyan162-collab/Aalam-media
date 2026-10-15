@@ -4,11 +4,13 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/i18n';
 import ImageSlot from '@/components/ui/ImageSlot';
+import { useArticles } from '@/lib/articlesStore';
 import { initialArticles } from '@/lib/data/seed';
 import { Search, Clock, ThumbsUp, Eye, Filter } from 'lucide-react';
 
 export default function NewsArchivePage() {
   const { t } = useLanguage();
+  const { articles } = useArticles();
   const [selectedCat, setSelectedCat] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -22,7 +24,7 @@ export default function NewsArchivePage() {
     { id: 'Hegere (Imala)', label: 'Hegere (Imala)' }
   ];
 
-  const filteredArticles = initialArticles.filter(art => {
+  const filteredArticles = articles.filter(art => {
     const matchesCat = selectedCat === 'all' || art.category === selectedCat;
     const matchesSearch = !searchTerm.trim() || 
       art.headline.toLowerCase().includes(searchTerm.toLowerCase()) || 

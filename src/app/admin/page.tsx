@@ -1,23 +1,33 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { initialArticles, initialBreakingNews, initialMembers, initialAds, initialErrorReports } from '@/lib/data/seed';
+import { useArticles } from '@/lib/articlesStore';
+import { initialMembers, initialAds, initialErrorReports } from '@/lib/data/seed';
 import { 
   FileText, 
   Flame, 
   Users, 
   Megaphone, 
   AlertCircle, 
-  Eye, 
-  ArrowUpRight, 
   PlusCircle, 
-  CheckCircle2 
+  Trash2,
+  ExternalLink,
+  CheckCircle2,
+  AlertTriangle
 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
-  const publishedCount = initialArticles.filter(a => a.status === 'PUBLISHED').length;
-  const draftCount = initialArticles.filter(a => a.status !== 'PUBLISHED').length;
+  const { articles, deleteArticle } = useArticles();
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+
+  const publishedArticles = articles.filter(a => a.status === 'PUBLISHED');
+  const recentArticles = articles.slice(0, 5);
+
+  const confirmDelete = (id: string) => {
+    deleteArticle(id);
+    setDeleteTargetId(null);
+  };
 
   return (
     <div className="space-y-8 max-w-6xl">
@@ -32,7 +42,7 @@ export default function AdminDashboardPage() {
 
         <Link
           href="/admin/articles/new"
-          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-lg transition"
+          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-lg transition active:scale-95"
         >
           <PlusCircle className="w-4 h-4" />
           <span>Barruu Haaraa Barreessi &rarr;</span>
@@ -46,7 +56,7 @@ export default function AdminDashboardPage() {
             <span>Oduu Maxxanfame</span>
             <FileText className="w-4 h-4 text-emerald-400" />
           </div>
-          <div className="text-2xl font-black text-white font-mono">{publishedCount}</div>
+          <div className="text-2xl font-black text-white font-mono">{publishedArticles.length}</div>
           <span className="text-[11px] text-emerald-400 font-mono">100% Google News Ready</span>
         </div>
 
@@ -87,7 +97,7 @@ export default function AdminDashboardPage() {
         <div className="lg:col-span-8 p-6 rounded-2xl bg-gray-950 border border-gray-800 space-y-4">
           <div className="flex items-center justify-between border-b border-gray-800 pb-3">
             <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-              Oduu Dhiyootti Maxxanfaman
+              ODUU DHIYOOTTI MAXXANFAMAN ({articles.length})
             </h3>
             <Link href="/admin/articles" className="text-xs text-emerald-400 hover:underline">
               Hunda Gulaali &rarr;
@@ -95,18 +105,70 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="space-y-3">
-            {initialArticles.slice(0, 4).map((art) => (
-              <div key={art.id} className="p-3 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-between gap-4">
-                <div className="space-y-0.5">
-                  <span className="text-[10px] font-mono text-emerald-400 uppercase font-bold">{art.category}</span>
-                  <h4 className="text-xs font-bold text-white line-clamp-1">{art.headline}</h4>
-                  <span className="text-[11px] text-gray-400 font-mono">{art.author.name} · {art.views} views</span>
+            {recentArticles.map((art) => (
+              <div key={art.id} className="p-3.5 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-between gap-4 group hover:border-gray-700 transition">
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <img
+                    src={art.featuredImage?.url || '/images/aalam-media-1.jpg'}
+                    alt={art.headline}
+                    className="w-12 h-10 rounded-lg object-cover shrink-0 border border-gray-800"
+                  />
+                  <div className="space-y-0.5 overflow-hidden">
+                    <span className="text-[10px] font-mono text-emerald-400 uppercase font-bold">{art.category}</span>
+                    <h4 className="text-xs font-bold text-white truncate max-w-sm">{art.headline}</h4>
+                    <span className="text-[11px] text-gray-400 font-mono block">
+                      {art.author.name} · {new Date(art.publishedAt).toLocaleDateString()}
+                    </span>
+                  </div>
                 </div>
-                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800 shrink-0 font-mono">
-                  {art.status}
-                </span>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono">
+                    {art.status}
+                  </span>
+
+                  <Link
+                    href={`/news/${art.slug}`}
+                    target="_blank"
+                    className="p-1.5 rounded-lg bg-gray-950 hover:bg-gray-800 text-gray-400 hover:text-white transition"
+                    title="Ilaali (View on site)"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+
+                  {/* Quick Delete */}
+                  {deleteTargetId === art.id ? (
+                    <div className="flex items-center gap-1 bg-red-950/80 border border-red-800 rounded-lg p-1 animate-fade-in">
+                      <span className="text-[10px] text-red-300 px-1 font-bold">Haquu?</span>
+                      <button
+                        onClick={() => confirmDelete(art.id)}
+                        className="px-1.5 py-0.5 bg-red-600 text-white text-[10px] font-bold rounded"
+                      >
+                        Eeyyee
+                      </button>
+                      <button
+                        onClick={() => setDeleteTargetId(null)}
+                        className="px-1.5 py-0.5 bg-gray-800 text-gray-300 text-[10px] rounded"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setDeleteTargetId(art.id)}
+                      className="p-1.5 rounded-lg bg-gray-950 hover:bg-red-950/80 text-gray-500 hover:text-red-400 transition"
+                      title="Haqi (Delete article)"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
+
+            {articles.length === 0 && (
+              <p className="text-xs text-gray-500 text-center py-4">Oduun tokkollee hin jiru.</p>
+            )}
           </div>
         </div>
 
