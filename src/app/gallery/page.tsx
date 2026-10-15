@@ -1,37 +1,142 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useLanguage } from '@/lib/i18n';
 import ImageSlot from '@/components/ui/ImageSlot';
 import { initialAlbums } from '@/lib/data/seed';
-import { Camera, Calendar, MapPin, X } from 'lucide-react';
+import { Camera, Calendar, MapPin, X, UploadCloud, ExternalLink, Sparkles } from 'lucide-react';
+import { MediaItem } from '@/lib/types';
 
 export default function GalleryPage() {
   const { t } = useLanguage();
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+  const [uploadedPhotos, setUploadedPhotos] = useState<MediaItem[]>([]);
+
+  useEffect(() => {
+    // 1. Check localStorage first for instant client feedback
+    try {
+      const saved = localStorage.getItem('aalam_media_uploads');
+      if (saved) {
+        const parsed: MediaItem[] = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          const imagesOnly = parsed.filter(m => m.type === 'image' && m.published !== false);
+          setUploadedPhotos(imagesOnly);
+        }
+      }
+    } catch (e) {}
+
+    // 2. Sync with server API
+    fetch('/api/media')
+      .then(res => res.ok ? res.json() : [])
+      .then((data: MediaItem[]) => {
+        if (Array.isArray(data)) {
+          const imagesOnly = data.filter(m => m.type === 'image' && m.published !== false);
+          // Merge avoiding duplicates
+          setUploadedPhotos(prev => {
+            const map = new Map<string, MediaItem>();
+            imagesOnly.forEach(item => map.set(item.id, item));
+            prev.forEach(item => {
+              if (!map.has(item.id)) map.set(item.id, item);
+            });
+            return Array.from(map.values());
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-      <div className="border-b border-gray-800 pb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-lg">
-            <Camera className="w-6 h-6" />
+      {/* Header */}
+      <div className="border-b border-gray-800 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-lg">
+              <Camera className="w-6 h-6" />
+            </div>
+            <div>
+              <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-widest">
+                AALAM PHOTO ARCHIVE
+              </span>
+              <h1 className="text-3xl sm:text-4xl font-black text-white">
+                Kuusaa Suuraa (Photo Gallery)
+              </h1>
+            </div>
           </div>
-          <div>
-            <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-widest">
-              AALAM PHOTO ARCHIVE
-            </span>
-            <h1 className="text-3xl sm:text-4xl font-black text-white">
-              Kuusaa Suuraa (Photo Gallery)
-            </h1>
-          </div>
+          <p className="text-xs sm:text-sm text-gray-400 mt-2">
+            Suuraalee istaadiyoo, qophiilee eebbaa, seenaa fi aadaa Oromoo suuraadhaan qindaa'an.
+          </p>
         </div>
-        <p className="text-xs sm:text-sm text-gray-400 mt-2">
-          Suuraalee istaadiyoo, qophiilee eebbaa, seenaa fi aadaa Oromoo suuraadhaan qindaa'an.
-        </p>
+
+        <Link
+          href="/admin/media"
+          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow-lg self-start sm:self-center active:scale-95"
+        >
+          <UploadCloud className="w-4 h-4" />
+          <span>Suuraa Haaraa Ol Fe'i &rarr;</span>
+        </Link>
       </div>
 
-      {/* Albums Grid */}
+      {/* 1. RECENTLY PUBLISHED UPLOADED PHOTOS (Live from Admin Uploads) */}
+      {uploadedPhotos.length > 0 && (
+        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#0A1810] to-gray-950 border-2 border-emerald-600/70 space-y-6 shadow-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-800/60 pb-4">
+            <div>
+              <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                KUUSAA HAARAA · LIVE PUBLISHED PHOTOS ({uploadedPhotos.length})
+              </span>
+              <h3 className="text-xl sm:text-2xl font-black text-white mt-1">
+                Suuraalee Haaraa Maxxanfaman (Published Media)
+              </h3>
+              <p className="text-xs text-gray-300 mt-1">
+                Suuraalee haaraa kallattiin ol fe'amanii weebsaayitii irratti ifatti maxxanfaman.
+              </p>
+            </div>
+
+            <span className="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-700 self-start sm:self-center">
+              ● Online & Live
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {uploadedPhotos.map((p) => (
+              <div
+                key={p.id}
+                onClick={() => setLightboxImg(p.url)}
+                className="cursor-pointer group relative overflow-hidden rounded-2xl border border-emerald-900/60 hover:border-emerald-500 bg-gray-900 transition duration-300 shadow-lg"
+              >
+                <div className="aspect-square overflow-hidden bg-black flex items-center justify-center">
+                  <img
+                    src={p.url}
+                    alt={p.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                  />
+                </div>
+                <div className="p-3 bg-gray-950 border-t border-gray-800 flex items-center justify-between">
+                  <div className="overflow-hidden">
+                    <h4 className="text-xs font-bold text-white truncate max-w-[170px]" title={p.title}>
+                      {p.title}
+                    </h4>
+                    <span className="text-[10px] text-gray-500 font-mono block">
+                      {new Date(p.createdAt).toLocaleDateString()} · {p.size}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
+                    LIVE
+                  </span>
+                </div>
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white font-bold text-xs backdrop-blur-[2px]">
+                  Guddisii Ilaali &rarr;
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 2. CURATED ALBUMS GRID */}
       <div className="space-y-8">
         {initialAlbums.map((alb) => (
           <div key={alb.id} className="p-6 rounded-3xl bg-gray-950 border border-gray-800 space-y-4">
@@ -78,14 +183,22 @@ export default function GalleryPage() {
 
       {/* Lightbox Modal */}
       {lightboxImg && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div 
+          onClick={() => setLightboxImg(null)}
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in"
+        >
           <button
             onClick={() => setLightboxImg(null)}
-            className="absolute top-6 right-6 text-white p-2 rounded-full bg-gray-900/80 hover:bg-gray-800"
+            className="absolute top-6 right-6 text-white p-2 rounded-full bg-gray-900/80 hover:bg-gray-800 border border-gray-700"
           >
             <X className="w-6 h-6" />
           </button>
-          <img src={lightboxImg} alt="Lightbox" className="max-w-full max-h-[85vh] rounded-xl shadow-2xl object-contain" />
+          <img 
+            src={lightboxImg} 
+            alt="Lightbox view" 
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain border border-gray-800" 
+          />
         </div>
       )}
     </div>

@@ -13,7 +13,7 @@ import {
   initialMembers, 
   initialErrorReports 
 } from './data/seed';
-import { Article, MemberRecord, Advertisement, ErrorReport, CommentItem } from './types';
+import { Article, MemberRecord, Advertisement, ErrorReport, CommentItem, MediaItem } from './types';
 
 export interface DatabaseSchema {
   articles: Article[];
@@ -30,6 +30,7 @@ export interface DatabaseSchema {
   errorReports: ErrorReport[];
   comments: CommentItem[];
   subscribers: { email: string; date: string }[];
+  mediaUploads: MediaItem[];
 }
 
 let dbInstance: DatabaseSchema | null = null;
@@ -75,7 +76,8 @@ function initDb(): DatabaseSchema {
     subscribers: [
       { email: 'reader1@example.com', date: '2026-09-14' },
       { email: 'member@aalammedia.com', date: '2026-09-15' }
-    ]
+    ],
+    mediaUploads: []
   };
 
   saveDb();

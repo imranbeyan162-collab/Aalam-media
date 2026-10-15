@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { 
   UploadCloud, 
   Video, 
@@ -14,18 +15,11 @@ import {
   Plus, 
   X,
   AlertTriangle,
-  Play
+  Play,
+  Globe,
+  ExternalLink
 } from 'lucide-react';
-
-interface MediaItem {
-  id: string;
-  title: string;
-  fileName: string;
-  type: 'image' | 'video' | 'audio';
-  size: string;
-  url: string;
-  createdAt: string;
-}
+import { MediaItem } from '@/lib/types';
 
 export default function AdminMediaUploadPage() {
   const [mediaType, setMediaType] = useState<'image' | 'video' | 'audio'>('image');
@@ -41,7 +35,7 @@ export default function AdminMediaUploadPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Load from localStorage on mount — starts with 0 items (no fake seed records)
+  // Load from localStorage & sync with server on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem('aalam_media_uploads');
@@ -54,6 +48,26 @@ export default function AdminMediaUploadPage() {
     } catch (e) {
       console.warn('Could not read saved media from localStorage', e);
     }
+
+    fetch('/api/media')
+      .then(res => res.ok ? res.json() : [])
+      .then((data: MediaItem[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setUploadedList(prev => {
+            const map = new Map<string, MediaItem>();
+            data.forEach(item => map.set(item.id, item));
+            prev.forEach(item => {
+              if (!map.has(item.id)) map.set(item.id, item);
+            });
+            const merged = Array.from(map.values());
+            try {
+              localStorage.setItem('aalam_media_uploads', JSON.stringify(merged));
+            } catch (e) {}
+            return merged;
+          });
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const saveToStorage = (newList: MediaItem[]) => {
@@ -128,11 +142,19 @@ export default function AdminMediaUploadPage() {
       type: mediaType,
       size: fileSizeText || '1.2 MB',
       url: filePreview || `/uploads/${title.toLowerCase().replace(/\s+/g, '-')}`,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      published: true // Published online immediately!
     };
 
     const updated = [newItem, ...uploadedList];
     saveToStorage(updated);
+
+    // Sync to server API
+    fetch('/api/media', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newItem)
+    }).catch(() => {});
 
     // Reset form
     setTitle('');
@@ -142,13 +164,32 @@ export default function AdminMediaUploadPage() {
     if (fileInputRef.current) fileInputRef.current.value = '';
 
     setUploadSuccess(true);
-    setTimeout(() => setUploadSuccess(false), 3500);
+    setTimeout(() => setUploadSuccess(false), 4000);
   };
 
   const handleDelete = (id: string) => {
     const updated = uploadedList.filter(m => m.id !== id);
     saveToStorage(updated);
     setDeleteTargetId(null);
+
+    // Sync deletion to server API
+    fetch(`/api/media?id=${encodeURIComponent(id)}`, {
+      method: 'DELETE'
+    }).catch(() => {});
+  };
+
+  const togglePublish = (id: string) => {
+    const item = uploadedList.find(m => m.id === id);
+    if (!item) return;
+    const newStatus = item.published === false ? true : false;
+    const updated = uploadedList.map(m => m.id === id ? { ...m, published: newStatus } : m);
+    saveToStorage(updated);
+
+    fetch('/api/media', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, published: newStatus })
+    }).catch(() => {});
   };
 
   const copyUrl = (id: string, url: string) => {
@@ -168,17 +209,25 @@ export default function AdminMediaUploadPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-5">
         <div>
           <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-widest">
-            DIRECT MEDIA MANAGEMENT REPOSITORY
+            DIRECT MEDIA MANAGEMENT & PUBLISHING
           </span>
           <h1 className="text-2xl sm:text-3xl font-black text-white">
-            Kuusaa Faayilootaa (Media Uploads)
+            Kuusaa Faayilootaa (Media Uploads & Live Publishing)
           </h1>
           <p className="text-xs sm:text-sm text-gray-400 mt-1">
-            Suuraalee, viidiyoowwanii fi sagaleewwan kallattiin kompiitara/moobaayila keessan irraa ol fe'aa, to'adhaa, ykn haqaatii.
+            Suuraalee, viidiyoowwanii fi sagaleewwan ol fe'aa. Suuraaleen ol fe'aman battalumatti fuula <strong className="text-emerald-400">/gallery</strong> irratti ifatti maxxanfamu.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
+          <Link
+            href="/gallery"
+            target="_blank"
+            className="inline-flex items-center gap-1.5 bg-gray-900 hover:bg-gray-800 border border-emerald-700/60 text-emerald-400 font-bold px-3 py-2 rounded-xl text-xs transition shadow active:scale-95"
+          >
+            <Globe className="w-4 h-4" />
+            <span>Kuusaa Suuraa Ilaali (Live Gallery) &rarr;</span>
+          </Link>
           <button
             type="button"
             onClick={() => openPicker('image')}
@@ -187,27 +236,24 @@ export default function AdminMediaUploadPage() {
             <ImageIcon className="w-4 h-4" />
             <span>Suuraa Ol Fe'i</span>
           </button>
-          <button
-            type="button"
-            onClick={() => openPicker('video')}
-            className="inline-flex items-center gap-1.5 bg-gray-900 hover:bg-gray-800 border border-gray-700 text-white font-bold px-3 py-2 rounded-xl text-xs transition shadow active:scale-95"
-          >
-            <Video className="w-4 h-4 text-emerald-400" />
-            <span>Viidiyoo Ol Fe'i</span>
-          </button>
         </div>
       </div>
 
       {/* Success Banner */}
       {uploadSuccess && (
-        <div className="p-4 rounded-2xl bg-emerald-950 border border-emerald-600 text-emerald-300 text-xs font-bold flex items-center justify-between shadow-xl animate-fade-in">
+        <div className="p-4 rounded-2xl bg-emerald-950 border border-emerald-600 text-emerald-300 text-xs font-bold flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xl animate-fade-in">
           <div className="flex items-center gap-2.5">
-            <Check className="w-5 h-5 text-emerald-400" />
-            <span>Faayilli keessan milkaa'inaan sarvarii irratti ol fe'ameera! Kuusaa keessatti dabalamera.</span>
+            <Check className="w-5 h-5 text-emerald-400 shrink-0" />
+            <span>Faayilli keessan milkaa'inaan ol fe'amee fuula <strong>/gallery</strong> irratti kallattiin maxxanfameera!</span>
           </div>
-          <button onClick={() => setUploadSuccess(false)} className="text-emerald-400 hover:text-white">
-            <X className="w-4 h-4" />
-          </button>
+          <Link
+            href="/gallery"
+            target="_blank"
+            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold self-start sm:self-auto shrink-0"
+          >
+            <span>Kuusaa Suuraa Irratti Ilaali</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </Link>
         </div>
       )}
 
@@ -283,8 +329,8 @@ export default function AdminMediaUploadPage() {
             <span className="text-[10px] font-mono font-bold bg-gray-900 border border-gray-800 text-gray-300 px-2.5 py-1 rounded-md">
               MP3, WAV
             </span>
-            <span className="text-[10px] font-mono text-emerald-400">
-              Hanga 500 MB
+            <span className="text-[10px] font-mono text-emerald-400 font-bold">
+              Battalumatti Maxxanfama (Instant Live)
             </span>
           </div>
         </div>
@@ -340,7 +386,7 @@ export default function AdminMediaUploadPage() {
           className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs sm:text-sm transition shadow-lg active:scale-[0.99] flex items-center justify-center gap-2"
         >
           <FileCheck className="w-4 h-4" />
-          <span>Ol Fe'i (Upload Directly to Website Repository)</span>
+          <span>Ol Fe'i & Kallattiin Maxxansi (Upload & Publish Online)</span>
         </button>
       </form>
 
@@ -356,55 +402,96 @@ export default function AdminMediaUploadPage() {
             </span>
           </div>
 
-          {uploadedList.length > 0 && (
-            <span className="text-[11px] text-gray-400 font-mono">
-              Faayiloota barbaaddan asii haquu dandeessu.
-            </span>
-          )}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/gallery"
+              target="_blank"
+              className="text-xs text-emerald-400 hover:underline flex items-center gap-1 font-semibold"
+            >
+              <span>Fuula /gallery Ilaali</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
 
         {/* Uploaded List */}
         <div className="divide-y divide-gray-800">
           {uploadedList.map((m) => (
-            <div key={m.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs group hover:bg-gray-900/40 p-2 rounded-xl transition">
+            <div key={m.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs group hover:bg-gray-900/40 p-2.5 rounded-xl transition">
               <div className="flex items-center gap-3 overflow-hidden">
                 {m.type === 'image' && (
-                  <div className="w-12 h-10 rounded-lg overflow-hidden border border-gray-800 shrink-0 bg-gray-900">
+                  <div className="w-14 h-12 rounded-xl overflow-hidden border border-gray-800 shrink-0 bg-gray-900">
                     <img src={m.url} alt={m.title} className="w-full h-full object-cover" />
                   </div>
                 )}
                 {m.type === 'video' && (
-                  <div className="w-12 h-10 rounded-lg border border-gray-800 shrink-0 bg-emerald-950/40 flex items-center justify-center text-emerald-400">
-                    <Video className="w-5 h-5" />
+                  <div className="w-14 h-12 rounded-xl border border-gray-800 shrink-0 bg-emerald-950/40 flex items-center justify-center text-emerald-400">
+                    <Video className="w-6 h-6" />
                   </div>
                 )}
                 {m.type === 'audio' && (
-                  <div className="w-12 h-10 rounded-lg border border-gray-800 shrink-0 bg-blue-950/40 flex items-center justify-center text-blue-400">
-                    <Radio className="w-5 h-5" />
+                  <div className="w-14 h-12 rounded-xl border border-gray-800 shrink-0 bg-blue-950/40 flex items-center justify-center text-blue-400">
+                    <Radio className="w-6 h-6" />
                   </div>
                 )}
 
-                <div className="overflow-hidden space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-white truncate max-w-xs">{m.title}</span>
-                    <span className={`px-1.5 py-0.2 rounded text-[9px] font-mono uppercase font-bold ${
+                <div className="overflow-hidden space-y-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-bold text-white truncate max-w-xs text-sm">{m.title}</span>
+                    <span className={`px-1.5 py-0.5 rounded text-[9px] font-mono uppercase font-bold ${
                       m.type === 'image' ? 'bg-amber-950 text-amber-300 border border-amber-800' :
                       m.type === 'video' ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' :
                       'bg-blue-950 text-blue-300 border border-blue-800'
                     }`}>
                       {m.type}
                     </span>
+
+                    {/* Live Online Badge */}
+                    {m.published !== false ? (
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-700 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        ONLINE (MAXXANFAMEERA)
+                      </span>
+                    ) : (
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono text-gray-400 bg-gray-900 border border-gray-800">
+                        DRAFT
+                      </span>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2 text-[11px] text-gray-500 font-mono">
+
+                  <div className="flex flex-wrap items-center gap-2 text-[11px] text-gray-500 font-mono">
                     <span>{m.size}</span>
                     <span>·</span>
                     <span>{new Date(m.createdAt).toLocaleDateString()}</span>
+                    {m.type === 'image' && (
+                      <>
+                        <span>·</span>
+                        <Link href="/gallery" target="_blank" className="text-emerald-400 hover:underline inline-flex items-center gap-0.5 font-bold">
+                          <span>Ilaali /gallery</span>
+                          <ExternalLink className="w-2.5 h-2.5" />
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
 
               {/* Action Buttons */}
               <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                {/* Publish / Unpublish Toggle */}
+                <button
+                  type="button"
+                  onClick={() => togglePublish(m.id)}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold font-mono transition border ${
+                    m.published !== false 
+                      ? 'bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border-emerald-800' 
+                      : 'bg-gray-900 hover:bg-gray-800 text-gray-400 border-gray-800'
+                  }`}
+                  title="Toggle published status"
+                >
+                  {m.published !== false ? 'Maxxanfameera' : 'Maxxansi'}
+                </button>
+
                 {/* Preview / View button */}
                 <button
                   type="button"

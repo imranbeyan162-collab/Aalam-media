@@ -38,6 +38,34 @@ export default function HomePage() {
   const { t, locale } = useLanguage();
   const { articles } = useArticles();
   const [eduTab, setEduTab] = useState<'quran' | 'hadith' | 'fiqh' | 'aqeedah' | 'tafsir'>('quran');
+  const [uploadedPhotos, setUploadedPhotos] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem('aalam_media_uploads');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          setUploadedPhotos(parsed.filter((m: any) => m.type === 'image' && m.published !== false));
+        }
+      }
+    } catch (e) {}
+
+    fetch('/api/media')
+      .then(res => res.ok ? res.json() : [])
+      .then((data: any[]) => {
+        if (Array.isArray(data)) {
+          const images = data.filter(m => m.type === 'image' && m.published !== false);
+          setUploadedPhotos(prev => {
+            const map = new Map();
+            images.forEach(i => map.set(i.id, i));
+            prev.forEach(i => { if (!map.has(i.id)) map.set(i.id, i); });
+            return Array.from(map.values());
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Dynamic Content Filtering from Live Store
   const leadArticle = articles[0] || initialArticles[0];
@@ -425,8 +453,6 @@ export default function HomePage() {
         </section>
 
         {/* SECTION 10 - PHOTO GALLERY (Photos only, by album/category) */}
-
-        {/* SECTION 10 - PHOTO GALLERY (Photos only, by album/category) */}
         <section className="space-y-4">
           <div className="border-b border-gray-800 pb-2 flex items-center justify-between">
             <h3 className="text-lg font-black uppercase tracking-wide text-white border-l-4 border-emerald-500 pl-3 flex items-center gap-2">
@@ -437,6 +463,31 @@ export default function HomePage() {
               {t('sections.viewAll')} &rarr;
             </Link>
           </div>
+
+          {/* Live Uploaded Photos */}
+          {uploadedPhotos.length > 0 && (
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-[#0A1810] to-gray-950 border border-emerald-800/70 space-y-3 shadow-xl">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Suuraalee Haaraa Maxxanfaman ({uploadedPhotos.length})
+                </span>
+                <Link href="/gallery" className="text-xs text-emerald-400 hover:underline">
+                  Kuusaa Suuraa Hunda Ilaali &rarr;
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {uploadedPhotos.slice(0, 4).map((p) => (
+                  <Link href="/gallery" key={p.id} className="group rounded-xl overflow-hidden border border-emerald-900/60 hover:border-emerald-500 bg-gray-900 block aspect-square relative shadow transition">
+                    <img src={p.url} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex items-end p-2.5">
+                      <span className="text-[11px] font-bold text-white truncate w-full">{p.title}</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {initialAlbums.map((alb) => (

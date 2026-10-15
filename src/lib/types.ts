@@ -169,3 +169,15 @@ export interface CommentItem {
   createdAt: string;
   isApproved: boolean;
 }
+
+export interface MediaItem {
+  id: string;
+  title: string;
+  fileName: string;
+  type: 'image' | 'video' | 'audio';
+  size: string;
+  url: string;
+  createdAt: string;
+  published?: boolean;
+}
+
