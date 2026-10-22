@@ -1,4 +1,4 @@
-import { Article, ScholarProfile, PodcastEpisode, VideoItem, AudioItem, PhotoAlbum, HegereStory, MemberRecord, Advertisement, ErrorReport } from '../types';
+import { Article, ScholarProfile, PodcastEpisode, VideoItem, AudioItem, PhotoAlbum, HegereStory, MemberRecord, Advertisement, ErrorReport, EducationLesson } from '../types';
 
 export const initialBreakingNews = [
   { id: '1', text: "Konfaransii Dhaabbata Ulamaa'ota Oromiyaa magaalaa Adaamaatti milkaa'inaan xumurame", link: '/news/ulama-oromiya-conference-adama', active: true },
@@ -464,4 +464,74 @@ export const initialAds: Advertisement[] = [];
 export const initialMembers: MemberRecord[] = [];
 
 export const initialErrorReports: ErrorReport[] = [];
+
+export const initialEducationLessons: EducationLesson[] = [
+  {
+    id: 'edu-1',
+    title: 'Bu\'uura Qulqullinaa (Xahaaraa) fi Sirna Wudhuu Guutuu',
+    sector: 'fiqh',
+    sectorLabel: 'Fiqhii (Islamic Jurisprudence)',
+    arabicText: 'يَا أَيُّهَا الَّذِينَ آمَنُوا إِذَا قُمْتُمْ إِلَى الصَّلَاةِ فَاغْسِلُوا وُجُوهَكُمْ وَأَيْدِيَكُمْ إِلَى الْمَرَافِقِ',
+    content: 'Fiqhiin utubaa amantaa Islaamaati. Salaanni wudhuu fi qulqullina malee hin fudhatamu. Darsiin kun ulaagaalee wudhuu, fardiiwwan afur, sunnaawwan Nabiyyii (SAW), fi wantoota wudhuu balleessan bal\'inaan ibsa.',
+    authorName: 'Ustaz Ahmed Nur (Islamic Education Sector)',
+    publishedAt: '2026-10-18T10:00:00Z',
+    published: true
+  },
+  {
+    id: 'edu-2',
+    title: 'Heera fi Seera Zakaa Qabeenyaa fi Horii',
+    sector: 'fiqh',
+    sectorLabel: 'Fiqhii (Islamic Jurisprudence)',
+    arabicText: 'وَأَقِيمُوا الصَّلَاةَ وَآتُوا الزَّكَاةَ وَارْكَعُوا مَعَ الرَّاكِعِينَ',
+    content: 'Zakaan ruknilee Islaamaa keessaa isa tokko. Dhaabbanni Aalam Media dhimma Zakaa yeroo ammayyaa keessatti herrega nisaabaa, warqii fi meetii, qarshii baankii jiru, fi oomisha qonnaa irratti seera Fiqhii ifa godha.',
+    authorName: 'Sheikh Yusuf Abdi (Fiqh Council)',
+    publishedAt: '2026-10-17T09:00:00Z',
+    published: true
+  },
+  {
+    id: 'edu-3',
+    title: 'Qaraatii fi Tajwiida: Seera Nuuna Saakinaa fi Tanwiina',
+    sector: 'quran',
+    sectorLabel: "Qur'aana Qulqulluu (Holy Qur'an)",
+    arabicText: 'وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا',
+    content: 'Qur\'aana seera Tajwiidaatiin bareechanii qara\'uun dirqama beekumsa amantaati. Seeronni Izhaar, Idghaam, Iqlaab, fi Ikhfaa aayatoota qabatamaadhaan dhiyaataniiru.',
+    authorName: 'Qari Abdurrahmaan Ali',
+    publishedAt: '2026-10-16T14:30:00Z',
+    published: true
+  },
+  {
+    id: 'edu-4',
+    title: 'Hadiisa 1ffaa Nawawii: "Hojiin Hundi Niyyaa Irratti Hundaa\'a"',
+    sector: 'hadith',
+    sectorLabel: 'Hadiisa Nabiyyii (Hadith & Sunnah)',
+    arabicText: 'إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى',
+    content: 'Hadiisni kun bu\'uura amantaa Islaamaati. Hojiin kamuu yoo niyyaan qulqulluun Rabbiif hin ta\'in gatii hin qabu. Darsiin kun hiikaa fi faayidaa niyyaa jireenya nama Muslimaa keessatti barsiisa.',
+    authorName: 'Ustaz Ahmed Nur',
+    publishedAt: '2026-10-15T11:00:00Z',
+    published: true
+  },
+  {
+    id: 'edu-5',
+    title: 'Ruknilee Iimaanaa Jaha (6) fi Bu\'aa Isaanii',
+    sector: 'aqeedah',
+    sectorLabel: 'Aqiidaa (Islamic Creed)',
+    arabicText: 'آمَنَ الرَّسُولُ بِمَا أُنزِلَ إِلَيْهِ مِن رَّبِّهِ وَالْمُؤْمِنُونَ',
+    content: 'Rabbitti, Malaykootatti, Kitaabbatti, Ergamtootatti, Guyyaa Qiyaamaatti, fi Qadaa fi Qadaratti amanuun bu\'uura Aqiidaati. Shakkii fi gaaffilee ammayyaa deebisuuf darsiin kun qophaa\'e.',
+    authorName: 'Dr. Faisal Abdulmalik',
+    publishedAt: '2026-10-14T08:00:00Z',
+    published: true
+  },
+  {
+    id: 'edu-6',
+    title: 'Tafsiira Suuraa Al-Hujuraat: Heera fi Safuu Hawaasaa',
+    sector: 'tafsir',
+    sectorLabel: "Tafsiira (Qur'anic Exegesis)",
+    arabicText: 'يَا أَيُّهَا النَّاسُ إِنَّا خَلَقْنَاكُم مِّن ذَكَرٍ وَأُنثَىٰ وَجَعَلْنَاكُمْ شُعُوبًا وَقَبَائِلَ لِتَعَارَفُوا',
+    content: 'Suuraan Al-Hujuraat heera tokkummaa, wal-danda\'uu, safuu, fi kabaja ilma namaati. Tafsiirri aayata kanaa dhalootaaf qajeelfama ammayyaa kenna.',
+    authorName: 'Sheikh Yusuf Abdi',
+    publishedAt: '2026-10-13T16:00:00Z',
+    published: true
+  }
+];
+
 

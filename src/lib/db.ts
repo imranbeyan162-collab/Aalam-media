@@ -11,9 +11,10 @@ import {
   initialHegere, 
   initialAds, 
   initialMembers, 
-  initialErrorReports 
+  initialErrorReports,
+  initialEducationLessons
 } from './data/seed';
-import { Article, MemberRecord, Advertisement, ErrorReport, CommentItem, MediaItem } from './types';
+import { Article, MemberRecord, Advertisement, ErrorReport, CommentItem, MediaItem, EducationLesson } from './types';
 
 export interface DatabaseSchema {
   articles: Article[];
@@ -32,6 +33,8 @@ export interface DatabaseSchema {
   subscribers: { email: string; date: string }[];
   mediaUploads: MediaItem[];
   adminPasscode?: string;
+  educationLessons: EducationLesson[];
+  educationPasscode?: string;
 }
 
 let dbInstance: DatabaseSchema | null = null;
@@ -79,7 +82,9 @@ function initDb(): DatabaseSchema {
       { email: 'member@aalammedia.com', date: '2026-09-15' }
     ],
     mediaUploads: [],
-    adminPasscode: 'misbah123abc'
+    adminPasscode: 'misbah123abc',
+    educationLessons: initialEducationLessons,
+    educationPasscode: 'ustaz123'
   };
 
   saveDb();

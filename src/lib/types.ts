@@ -3,6 +3,7 @@ export type Locale = 'om' | 'en' | 'ar';
 export type UserRole = 
   | 'SUPER_ADMIN'
   | 'CEO_OWNER'
+  | 'ISLAMIC_EDUCATION_ADMIN'
   | 'EDITOR_IN_CHIEF'
   | 'EDITOR'
   | 'REPORTER'
@@ -173,6 +174,7 @@ export interface CommentItem {
 export interface MediaItem {
   id: string;
   title: string;
+  description?: string;
   fileName: string;
   type: 'image' | 'video' | 'audio';
   size: string;
@@ -180,4 +182,22 @@ export interface MediaItem {
   createdAt: string;
   published?: boolean;
 }
+
+export type EducationSector = 'fiqh' | 'quran' | 'hadith' | 'aqeedah' | 'tafsir' | 'history';
+
+export interface EducationLesson {
+  id: string;
+  title: string;
+  sector: EducationSector;
+  sectorLabel: string;
+  arabicText?: string;
+  content: string;
+  authorName: string;
+  audioUrl?: string;
+  videoUrl?: string;
+  imageUrl?: string;
+  publishedAt: string;
+  published: boolean;
+}
+
 

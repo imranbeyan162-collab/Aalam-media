@@ -24,10 +24,12 @@ import {
   EyeOff,
   CheckCircle2,
   X,
-  AlertCircle
+  AlertCircle,
+  BookOpen
 } from 'lucide-react';
 
-const DEFAULT_PASSCODE = 'misbah123abc';
+const DEFAULT_CEO_PASSCODE = 'misbah123abc';
+const DEFAULT_EDU_PASSCODE = 'ustaz123';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -40,9 +42,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [showPasscode, setShowPasscode] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [eduPasscodeDisplay, setEduPasscodeDisplay] = useState<string>('ustaz123');
 
   // Change Passcode Modal State
   const [changeModalOpen, setChangeModalOpen] = useState<boolean>(false);
+  const [changeTarget, setChangeTarget] = useState<'ceo' | 'education'>('ceo');
   const [oldPasscode, setOldPasscode] = useState<string>('');
   const [newPasscode, setNewPasscode] = useState<string>('');
   const [confirmPasscode, setConfirmPasscode] = useState<string>('');
@@ -54,26 +58,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   useEffect(() => {
     try {
       const authSession = sessionStorage.getItem('aalam_admin_authenticated');
+      const savedRole = sessionStorage.getItem('aalam_admin_role') as UserRole;
       if (authSession === 'true') {
         setIsAuthenticated(true);
+        if (savedRole) {
+          setCurrentRole(savedRole);
+        }
       }
     } catch (e) {}
     setIsInitializing(false);
 
-    // Sync current active passcode from server
+    // Sync current active passcodes from server
     fetch('/api/auth/passcode')
       .then(res => res.ok ? res.json() : null)
       .then(data => {
-        if (data?.passcode) {
-          localStorage.setItem('aalam_admin_passcode', data.passcode);
+        if (data?.ceoPasscode) {
+          localStorage.setItem('aalam_admin_passcode', data.ceoPasscode);
+        }
+        if (data?.educationPasscode) {
+          localStorage.setItem('aalam_edu_passcode', data.educationPasscode);
+          setEduPasscodeDisplay(data.educationPasscode);
         }
       })
       .catch(() => {});
   }, []);
 
-  const getActivePasscode = () => {
-    return localStorage.getItem('aalam_admin_passcode') || DEFAULT_PASSCODE;
-  };
+  const isEduAdmin = currentRole === 'ISLAMIC_EDUCATION_ADMIN';
+
+  // Guard: Redirect Islamic Education Admin away from other admin routes
+  useEffect(() => {
+    if (isAuthenticated && isEduAdmin && pathname !== '/admin/education') {
+      window.location.href = '/admin/education';
+    }
+  }, [isAuthenticated, isEduAdmin, pathname]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,14 +98,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setAuthError(null);
 
     const entered = passcodeInput.trim();
-    const localPass = getActivePasscode();
+    const localCeoPass = localStorage.getItem('aalam_admin_passcode') || DEFAULT_CEO_PASSCODE;
+    const localEduPass = localStorage.getItem('aalam_edu_passcode') || DEFAULT_EDU_PASSCODE;
 
     // 1. Quick local check
-    if (entered === localPass || entered === DEFAULT_PASSCODE) {
+    if (entered === localCeoPass || entered === DEFAULT_CEO_PASSCODE) {
       sessionStorage.setItem('aalam_admin_authenticated', 'true');
+      sessionStorage.setItem('aalam_admin_role', 'SUPER_ADMIN');
+      setCurrentRole('SUPER_ADMIN');
       setIsAuthenticated(true);
       setIsSubmitting(false);
       setPasscodeInput('');
+      return;
+    }
+
+    if (entered === localEduPass || entered === DEFAULT_EDU_PASSCODE) {
+      sessionStorage.setItem('aalam_admin_authenticated', 'true');
+      sessionStorage.setItem('aalam_admin_role', 'ISLAMIC_EDUCATION_ADMIN');
+      setCurrentRole('ISLAMIC_EDUCATION_ADMIN');
+      setIsAuthenticated(true);
+      setIsSubmitting(false);
+      setPasscodeInput('');
+      if (pathname !== '/admin/education') {
+        window.location.href = '/admin/education';
+      }
       return;
     }
 
@@ -103,8 +136,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       if (data.success) {
         sessionStorage.setItem('aalam_admin_authenticated', 'true');
+        sessionStorage.setItem('aalam_admin_role', data.role);
+        setCurrentRole(data.role);
         setIsAuthenticated(true);
         setPasscodeInput('');
+        if (data.role === 'ISLAMIC_EDUCATION_ADMIN' && pathname !== '/admin/education') {
+          window.location.href = '/admin/education';
+        }
       } else {
         setAuthError(data.error || 'Koodiin iccitii dogoggora! Irra deebi\'aa yaalaa.');
       }
@@ -117,6 +155,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const handleLogout = () => {
     sessionStorage.removeItem('aalam_admin_authenticated');
+    sessionStorage.removeItem('aalam_admin_role');
     setIsAuthenticated(false);
     setPasscodeInput('');
     setAuthError(null);
@@ -138,13 +177,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     setIsChanging(true);
-
-    const currentActive = getActivePasscode();
-    if (oldPasscode !== currentActive && oldPasscode !== DEFAULT_PASSCODE) {
-      setChangeError('Koodiin ammaa (Current Passcode) dogoggora!');
-      setIsChanging(false);
-      return;
-    }
+    const target = isEduAdmin ? 'education' : changeTarget;
 
     try {
       const res = await fetch('/api/auth/passcode', {
@@ -152,6 +185,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'change',
+          target,
           currentPasscode: oldPasscode,
           newPasscode: newPasscode.trim()
         })
@@ -159,8 +193,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       const data = await res.json();
 
       if (data.success) {
-        localStorage.setItem('aalam_admin_passcode', newPasscode.trim());
-        setChangeSuccess('Koodiin iccitii keessan milkaa\'inaan jijjiirameera!');
+        if (target === 'education') {
+          localStorage.setItem('aalam_edu_passcode', newPasscode.trim());
+          setEduPasscodeDisplay(newPasscode.trim());
+          setChangeSuccess('Koodiin iccitii Barnoota Islaamaa milkaa\'inaan jijjiirameera!');
+        } else {
+          localStorage.setItem('aalam_admin_passcode', newPasscode.trim());
+          setChangeSuccess('Koodiin iccitii CEO milkaa\'inaan jijjiirameera!');
+        }
         setOldPasscode('');
         setNewPasscode('');
         setConfirmPasscode('');
@@ -169,12 +209,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           setChangeSuccess(null);
         }, 2200);
       } else {
-        setChangeError(data.error || 'Jijjiiruu hin dandeenye.');
+        setChangeError(data.error || 'Jijjiiruu hin dandeenye. Koodii ammaa mirkaneeffadhaa.');
       }
     } catch (err) {
       // Local fallback
-      localStorage.setItem('aalam_admin_passcode', newPasscode.trim());
-      setChangeSuccess('Koodiin iccitii milkaa\'inaan jijjiirameera!');
+      if (target === 'education') {
+        localStorage.setItem('aalam_edu_passcode', newPasscode.trim());
+        setEduPasscodeDisplay(newPasscode.trim());
+        setChangeSuccess('Koodiin iccitii Barnoota Islaamaa jijjiirameera!');
+      } else {
+        localStorage.setItem('aalam_admin_passcode', newPasscode.trim());
+        setChangeSuccess('Koodiin iccitii CEO jijjiirameera!');
+      }
       setTimeout(() => {
         setChangeModalOpen(false);
         setChangeSuccess(null);
@@ -184,16 +230,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   };
 
-  const navItems = [
-    { label: 'Overview', href: '/admin', icon: LayoutDashboard },
-    { label: 'Articles & Workflow', href: '/admin/articles', icon: FileText },
-    { label: 'Breaking Ticker', href: '/admin/breaking', icon: Flame },
-    { label: 'Media Uploads', href: '/admin/media', icon: UploadCloud },
-    { label: 'Members', href: '/admin/members', icon: Users },
-    { label: 'Advertisements', href: '/admin/ads', icon: Megaphone },
-    { label: 'Error Reports', href: '/admin/errors', icon: AlertTriangle },
-    { label: 'Newsletter', href: '/admin/newsletter', icon: Mail }
-  ];
+  const navItems = isEduAdmin
+    ? [
+        { label: 'Barnoota Islaamaa (Islamic Education)', href: '/admin/education', icon: BookOpen }
+      ]
+    : [
+        { label: 'Overview', href: '/admin', icon: LayoutDashboard },
+        { label: 'Articles & Workflow', href: '/admin/articles', icon: FileText },
+        { label: 'Breaking Ticker', href: '/admin/breaking', icon: Flame },
+        { label: 'Media Uploads', href: '/admin/media', icon: UploadCloud },
+        { label: 'Barnoota Islaamaa', href: '/admin/education', icon: BookOpen },
+        { label: 'Members', href: '/admin/members', icon: Users },
+        { label: 'Advertisements', href: '/admin/ads', icon: Megaphone },
+        { label: 'Error Reports', href: '/admin/errors', icon: AlertTriangle },
+        { label: 'Newsletter', href: '/admin/newsletter', icon: Mail }
+      ];
 
   // Prevent flicker during initial load
   if (isInitializing) {
@@ -225,16 +276,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 Wiirtuu Bulchiinsa Aalam Media
               </h1>
               <p className="text-xs text-gray-400 mt-1">
-                Kutaa bulchiinsaa fi tamsaasa oduu seenuuf koodii iccitii galchaa.
+                Koodii iccitii CEO yookiin koodii Barnoota Islaamaa galchaa.
               </p>
             </div>
           </div>
 
           {/* Passcode Box */}
           <div className="p-8 rounded-3xl bg-gray-950 border border-gray-800 shadow-2xl space-y-5">
-            <div className="flex items-center gap-2 pb-3 border-b border-gray-800 text-xs text-gray-300 font-mono">
-              <Lock className="w-4 h-4 text-emerald-400" />
-              <span>Seensa Eegumsa Qabu (Protected Portal)</span>
+            <div className="flex items-center justify-between pb-3 border-b border-gray-800 text-xs text-gray-300 font-mono">
+              <div className="flex items-center gap-2">
+                <Lock className="w-4 h-4 text-emerald-400" />
+                <span>Seensa Eegumsa Qabu</span>
+              </div>
+              <span className="text-[10px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-900">
+                Multi-Role
+              </span>
             </div>
 
             {authError && (
@@ -271,6 +327,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     {showPasscode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
+                <div className="flex items-center justify-between mt-2 text-[10px] text-gray-500">
+                  <span>CEO: misbah123abc</span>
+                  <span>Ustaz: ustaz123</span>
+                </div>
               </div>
 
               <button
@@ -279,7 +339,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3 rounded-xl text-xs sm:text-sm transition shadow-lg flex items-center justify-center gap-2 active:scale-[0.99] disabled:opacity-50"
               >
                 <Unlock className="w-4 h-4" />
-                <span>{isSubmitting ? 'Mirkanaa\'aa jira...' : 'Galmaa\'i (Unlock Admin Dashboard)'}</span>
+                <span>{isSubmitting ? 'Mirkanaa\'aa jira...' : 'Galmaa\'i (Unlock Dashboard)'}</span>
               </button>
             </form>
           </div>
@@ -314,33 +374,79 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="flex items-center gap-2.5 pt-2">
               <img src="/brand/logo.png" alt="Aalam Media" className="w-8 h-8 object-contain" />
               <div>
-                <h2 className="text-sm font-black text-white font-display">AALAM NEWSROOM</h2>
-                <span className="text-[10px] text-emerald-400 font-mono">Central Control v1.0</span>
+                <h2 className="text-sm font-black text-white font-display">
+                  {isEduAdmin ? 'BARNOOTA ISLAAMAA' : 'AALAM NEWSROOM'}
+                </h2>
+                <span className="text-[10px] text-emerald-400 font-mono">
+                  {isEduAdmin ? 'Ustaz Portal v1.0' : 'Central Control v1.0'}
+                </span>
               </div>
             </div>
           </div>
 
-          {/* User Role Switcher */}
-          <div className="p-3 rounded-xl bg-gray-900 border border-gray-800 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-bold">
-              <Shield className="w-3.5 h-3.5" />
-              <span>Gahee Hojii (Active Role)</span>
+          {/* User Role Presentation */}
+          {isEduAdmin ? (
+            <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/60 space-y-1">
+              <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-bold">
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Bulchiinsa Barnoota Islaamaa</span>
+              </div>
+              <p className="text-[11px] text-gray-400 leading-tight">
+                Kutaa Barnoota Islaamaa (Fiqhii, Qur'aana, Hadiisa) qofa to'attu.
+              </p>
             </div>
-            <select
-              value={currentRole}
-              onChange={(e) => setCurrentRole(e.target.value as UserRole)}
-              className="w-full bg-gray-950 border border-gray-700 text-white rounded-lg p-1.5 text-xs font-mono focus:outline-none focus:border-emerald-500"
-            >
-              <option value="SUPER_ADMIN">Super Admin (Misbah Sheikh Husein)</option>
-              <option value="CEO_OWNER">CEO / Owner</option>
-              <option value="EDITOR_IN_CHIEF">Editor-in-Chief</option>
-              <option value="EDITOR">Editor</option>
-              <option value="REPORTER">Reporter</option>
-              <option value="PHOTOGRAPHER_MEDIA">Photographer / Media</option>
-              <option value="MEMBERSHIP_MANAGER">Membership Manager</option>
-              <option value="ADVERTISEMENT_MANAGER">Advertisement Manager</option>
-            </select>
-          </div>
+          ) : (
+            <>
+              <div className="p-3 rounded-xl bg-gray-900 border border-gray-800 space-y-1.5">
+                <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-bold">
+                  <Shield className="w-3.5 h-3.5" />
+                  <span>Gahee Hojii (Active Role)</span>
+                </div>
+                <select
+                  value={currentRole}
+                  onChange={(e) => setCurrentRole(e.target.value as UserRole)}
+                  className="w-full bg-gray-950 border border-gray-700 text-white rounded-lg p-1.5 text-xs font-mono focus:outline-none focus:border-emerald-500"
+                >
+                  <option value="SUPER_ADMIN">Super Admin (Misbah Sheikh Husein)</option>
+                  <option value="CEO_OWNER">CEO / Owner</option>
+                  <option value="EDITOR_IN_CHIEF">Editor-in-Chief</option>
+                  <option value="EDITOR">Editor</option>
+                  <option value="REPORTER">Reporter</option>
+                  <option value="PHOTOGRAPHER_MEDIA">Photographer / Media</option>
+                  <option value="MEMBERSHIP_MANAGER">Membership Manager</option>
+                  <option value="ADVERTISEMENT_MANAGER">Advertisement Manager</option>
+                </select>
+              </div>
+
+              {/* CEO: Ustaz Education Passcode Card */}
+              <div className="p-3 rounded-xl bg-gray-900/80 border border-emerald-900/50 space-y-1.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-400 font-medium flex items-center gap-1 text-[11px]">
+                    <KeyRound className="w-3 h-3 text-emerald-400" />
+                    Koodii Ustaz:
+                  </span>
+                  <span className="font-mono text-emerald-400 font-bold text-xs bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
+                    {eduPasscodeDisplay}
+                  </span>
+                </div>
+                <p className="text-[10px] text-gray-400 leading-tight">
+                  Koodii kana Ustaz/Barsiisaatti kennaa. Barnoota Islaamaa qofa to'ata.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setChangeTarget('education');
+                    setChangeModalOpen(true);
+                    setChangeError(null);
+                    setChangeSuccess(null);
+                  }}
+                  className="w-full text-center text-[10px] text-emerald-400 hover:text-emerald-300 font-bold pt-1 underline"
+                >
+                  Koodii Ustaz Jijjiiri
+                </button>
+              </div>
+            </>
+          )}
 
           {/* Nav Links */}
           <nav className="space-y-1">
@@ -367,6 +473,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <button
             type="button"
             onClick={() => {
+              setChangeTarget(isEduAdmin ? 'education' : 'ceo');
               setChangeModalOpen(true);
               setChangeError(null);
               setChangeSuccess(null);
@@ -375,7 +482,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           >
             <div className="flex items-center gap-2">
               <KeyRound className="w-4 h-4 text-emerald-400" />
-              <span>Koodii Jijjiiri (Passcode)</span>
+              <span>{isEduAdmin ? 'Koodii Ustaz Jijjiiri' : 'Koodii Jijjiiri'}</span>
             </div>
             <span className="text-[10px] font-mono text-gray-500">Edit</span>
           </button>
@@ -398,11 +505,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="md:hidden flex items-center justify-between pb-4 mb-6 border-b border-gray-800">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="text-xs font-bold text-white">Admin Session Active</span>
+            <span className="text-xs font-bold text-white">
+              {isEduAdmin ? 'Ustaz Session Active' : 'Admin Session Active'}
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setChangeModalOpen(true)}
+              onClick={() => {
+                setChangeTarget(isEduAdmin ? 'education' : 'ceo');
+                setChangeModalOpen(true);
+              }}
               className="p-1.5 rounded-lg bg-gray-900 text-emerald-400 border border-gray-800 text-xs"
               title="Koodii Jijjiiri"
             >
@@ -418,7 +530,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </div>
 
-        {children}
+        {/* Access Protection Banner for Restricted Roles */}
+        {isEduAdmin && pathname !== '/admin/education' ? (
+          <div className="p-8 rounded-3xl bg-gray-950 border border-red-900/60 text-center space-y-4">
+            <AlertCircle className="w-10 h-10 text-red-400 mx-auto" />
+            <h2 className="text-xl font-bold text-white">Hayyama Hin Qabdani (Access Restricted)</h2>
+            <p className="text-xs text-gray-400 max-w-md mx-auto">
+              Akka Ustaza Barnoota Islaamaatti, kutaa kana seenuuf hayyama hin qabdani. 
+              Gara kutaa Barnoota Islaamaatti deebi'aa.
+            </p>
+            <Link
+              href="/admin/education"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs"
+            >
+              <BookOpen className="w-4 h-4" />
+              <span>Gara Barnoota Islaamaatti Deebi'i</span>
+            </Link>
+          </div>
+        ) : (
+          children
+        )}
       </main>
 
       {/* CHANGE PASSCODE MODAL */}
@@ -437,8 +568,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   <KeyRound className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Koodii Iccitii Jijjiiri</h3>
-                  <span className="text-[10px] text-gray-400 font-mono">Change Admin Passcode</span>
+                  <h3 className="text-base font-bold text-white">
+                    {isEduAdmin 
+                      ? 'Koodii Barnoota Islaamaa Jijjiiri' 
+                      : changeTarget === 'education'
+                      ? 'Koodii Ustaz Jijjiiri'
+                      : 'Koodii CEO Jijjiiri'}
+                  </h3>
+                  <span className="text-[10px] text-gray-400 font-mono">
+                    {isEduAdmin || changeTarget === 'education' ? 'Ustaz Passcode' : 'CEO Master Passcode'}
+                  </span>
                 </div>
               </div>
               <button
@@ -449,6 +588,34 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <X className="w-5 h-5" />
               </button>
             </div>
+
+            {/* Target Tab Switcher for CEO */}
+            {!isEduAdmin && (
+              <div className="grid grid-cols-2 gap-1 p-1 bg-gray-900 border border-gray-800 rounded-xl text-xs">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setChangeTarget('ceo');
+                    setChangeError(null);
+                    setChangeSuccess(null);
+                  }}
+                  className={`py-1.5 rounded-lg font-bold transition ${changeTarget === 'ceo' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                >
+                  Koodii CEO (Master)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setChangeTarget('education');
+                    setChangeError(null);
+                    setChangeSuccess(null);
+                  }}
+                  className={`py-1.5 rounded-lg font-bold transition ${changeTarget === 'education' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                >
+                  Koodii Ustaz (Education)
+                </button>
+              </div>
+            )}
 
             {changeError && (
               <div className="p-3 rounded-xl bg-red-950/80 border border-red-800 text-red-300 text-xs font-medium flex items-center gap-2">
@@ -467,7 +634,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <form onSubmit={handleChangePasscodeSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-gray-300 mb-1">
-                  Koodii Ammaa (Current Passcode)
+                  {changeTarget === 'education' && !isEduAdmin
+                    ? 'Koodii CEO yookiin Koodii Ustaz Ammaa'
+                    : 'Koodii Ammaa (Current Passcode)'}
                 </label>
                 <input
                   type="password"

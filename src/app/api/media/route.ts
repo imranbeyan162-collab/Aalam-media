@@ -22,6 +22,7 @@ export async function POST(req: Request) {
     const newItem: MediaItem = {
       id: body.id || 'media-' + Date.now(),
       title: body.title || 'Untitled Media',
+      description: body.description?.trim() || '',
       fileName: body.fileName || 'file',
       type: body.type || 'image',
       size: body.size || '1.0 MB',
@@ -63,7 +64,7 @@ export async function DELETE(req: Request) {
 export async function PATCH(req: Request) {
   try {
     const body = await req.json();
-    const { id, published } = body;
+    const { id, published, title, description } = body;
     if (!id) {
       return NextResponse.json({ error: 'Missing media id' }, { status: 400 });
     }
@@ -72,7 +73,9 @@ export async function PATCH(req: Request) {
     if (db.mediaUploads) {
       const item = db.mediaUploads.find(m => m.id === id);
       if (item) {
-        item.published = published !== undefined ? published : !item.published;
+        if (published !== undefined) item.published = published;
+        if (title !== undefined) item.title = title.trim();
+        if (description !== undefined) item.description = description.trim();
         persistDb();
         return NextResponse.json(item);
       }
@@ -83,3 +86,4 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: err.message || 'Failed to update media status' }, { status: 500 });
   }
 }
+
